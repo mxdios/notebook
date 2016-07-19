@@ -1,7 +1,7 @@
 步骤：
 
 1. 去一个新的目录，存放git项目
-2. 将gitlab上已有的项目克隆下来， git clone git@git.debug.live:apt/codemake-ios.git
+2. 将gitlab上已有的项目克隆下来， git clone git@git.xxxxxx.git
 3. 克隆成功，将已有项目拷贝到克隆下来的文件夹里，和.git文件并列
 4. 进入存放.git和项目的文件夹，关联.git文件， git add .
 5. commit到本地库， git commit -m "commit的信息记录"
