@@ -1,0 +1,114 @@
+# iOS开发中踩过的一些坑
+
+## 微信的openid
+
+- 微信的openid对于某个用户来说并不是唯一的，某个用户对某个公众号或者对某个微信开放平台下某个appid生成的是唯一的。appid改变，openid也会改变。公众号下和app下获得的openid不同，现阶段无法实现相同操作。使用unionid打通用户，微信开放平台上绑定了公众号，这时获取的unionid会一致。
+
+## pdf的展示
+
+项目里要求读取从服务器下载下来的pdf，pdf文件是一个发票文件，下载到本地Documents目录下，展示出来。问题来了，发票上的印章不见了。
+
+我将这个pdf文件放到了各种应用中打开，结果是：微信、qq、印象笔记、掌阅iReader、Safari、iBooks、WPS Office、mac上的预览，除了WPS Office、mac上的预览能显示出印章，其他的全部显示不出印章，甚至微信、掌阅iReader连发票上的分割线都显示不出来。
+
+而且，用WPS Office打开，可以点击印章删除，可以点击分割线删除。这时我感觉印章和分割线是在pdf上的标注，就像以前使用Adobe的工具给pdf加标注文字，选中文字高亮显示。
+
+**最开始使用了最简单的展示pdf文件的方法：UIWebView**
+
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentsDirectory = [paths objectAtIndex:0];
+	NSString *filePDF = [documentsDirectory  stringByAppendingPathComponent:@"file.pdf"]
+	
+	//第一种webview加载方式
+	NSURL *url = [NSURL fileURLWithPath:_filePath];
+	NSURLRequest *request = [NSURLRequest requestWithURL:url];
+	[_webView loadRequest:request];
+
+	//第二种webview加载方式
+    NSURL *url = [NSURL fileURLWithPath:_filePath];
+	NSData *data = [NSData dataWithContentsOfFile:_filePath];
+    [_webView loadData:data MIMEType:@"application/pdf" textEncodingName:@"UTF-8" baseURL:url];
+
+
+失败！
+
+**转而使用Quartz 2D绘制pdf**
+
+	- (void)drawRect:(CGRect)rect
+	{
+		CGContextRef context = UIGraphicsGetCurrentContext();
+    
+	    //旋转坐标系
+	    CGContextTranslateCTM(context, 0, self.frame.size.height-60);
+	    CGContextScaleCTM(context, 1, -1);
+	    
+	    CGPDFPageRef pdfPage = CGPDFDocumentGetPage(_pdfDoc, 1);
+	    
+	    CGContextSaveGState(context);
+	    
+	    CGAffineTransform pdfTransform = CGPDFPageGetDrawingTransform(pdfPage, kCGPDFCropBox, self.bounds, 0, true);
+	    
+	    CGContextConcatCTM(context, pdfTransform);
+	    CGContextDrawPDFPage(context, pdfPage);
+	    
+	    CGContextRestoreGState(context);
+	}
+	
+失败！甚至分割线都没了
+
+这是最常用的两种读取pdf文件的方式，然而还是显示不出来发票上面的印章
+
+**使用QLPreviewController预览**
+
+	//导入QuickLook库
+	#import <QuickLook/QuickLook.h>
+
+	- (void)viewDidLoad {
+		QLPreviewController *previ = [[QLPreviewController alloc] init];
+		previ.view.frame = CGRectMake(0, 0, self.view.width, self.view.height - 200);
+		previ.delegate = self;
+		previ.dataSource = self;
+		[self.view addSubview:previ.view];
+	}
+	
+	//实现代理方法
+	#pragma mark - 在此代理处加载需要显示的文件
+	- (NSURL *)previewController:(QLPreviewController *)previewController previewItemAtIndex:(NSInteger)idx
+	{
+	    return [NSURL fileURLWithPath:filePath];
+	}
+	
+	#pragma mark - 返回文件的个数
+	-(NSInteger)numberOfPreviewItemsInPreviewController:(QLPreviewController *)controller {
+	    return 1;
+	}
+	#pragma mark - 即将要退出浏览文件时执行此方法
+	-(void)previewControllerWillDismiss:(QLPreviewController *)controller {
+	    XDLog(@"退出");
+	}
+	
+还是失败的没显示出来印章。
+
+**在github上找读取pdf的项目**
+
+- UIImage-PDF 将pdf转成image显示，结果失败
+- Reader 比较著名的pdf阅读项目，支持大文件，加密文件，有着ibooks一样的界面。也有着iBooks一样的结果，同样显示不出来印章
+- PDFRenderer 结果失败
+- PDFTest 结果失败
+- PDFViewTest 结果失败
+....
+
+然后各种谷歌、百度、必应搜索，终于搜到了一个有用的结果
+
+原文如下 
+
+*公司的项目要读取服务器发来的PDF文件，用网上的方法读取后虽然能读出来，但是发现个问题，PDF文件有的签章不见了。这个可是大问题，试了好多iOS框架库，例如 Reader,FastPdfKit都读不出来。*
+
+*在知乎上找到一个大神的发言，解释了PDF有的内容读不出来的原因。iOS 对矢量图片的支持如何？ 直接引用其中的一段话:"iOS 的 Core Graphics 框架底层和 OS X 一样，都是基于 PDF 的。所以 iOS 用 PDF 很方便，比如 iOS 的 Quick Look 框架就可以直接看 PDF。如果要是只看文档那样简单的 PDF 的话，一般是没有什么问题的。不过，如果要是想看用 AI 制作的，带有多重描边、填充、网格渐变、阴影、多图层等东西的复杂 PDF 图形的话，有很大机率会出现问题。比如，在 iOS 和 OS X 上常出现的一个问题是，PDF 文稿里隐藏的图层、图形被显示出来。如果查看复杂一些的 PDF，很可能在 Adobe Illustrator、OS X、iOS、Adobe Reader 下查看的效果都不一样。所以说，PDF 虽然一般被认为是跨平台的「安全格式」，不过也并不是 100% 保险。 Adobe Reader 的 iOS 版很可能没有使用 iOS 系统自带的 PDF 和矢量绘图 API，而是自己实现了一个，因此通常 Adobe Reader 显示复杂一些的 PDF 比使用 iOS 原生 API 解析 PDF 的 App 更准确一些。还有， 无论是使用 iOS 原生的 Quick Look 还是用 Adobe Reader 查看，渲染复杂的 PDF 有可能特别慢"。公司PDF的签章好像就是多图层，在文字的底下。*
+
+*找了好久，终于找到了一个能读取多图层的PDF文件的框架 - MuPDF*
+
+得出一个结论，使用Mupdf
+
+[Mupdf github地址](https://github.com/muennich/mupdf)
+
+[使用方法](http://www.jianshu.com/p/5fd00530d4bb)
