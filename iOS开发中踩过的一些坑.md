@@ -14,44 +14,49 @@
 
 **最开始使用了最简单的展示pdf文件的方法：UIWebView**
 
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-	NSString *documentsDirectory = [paths objectAtIndex:0];
-	NSString *filePDF = [documentsDirectory  stringByAppendingPathComponent:@"file.pdf"]
-	
-	//第一种webview加载方式
-	NSURL *url = [NSURL fileURLWithPath:_filePath];
-	NSURLRequest *request = [NSURLRequest requestWithURL:url];
-	[_webView loadRequest:request];
+```
+NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+NSString *documentsDirectory = [paths objectAtIndex:0];
+NSString *filePDF = [documentsDirectory  stringByAppendingPathComponent:@"file.pdf"]
 
-	//第二种webview加载方式
-    NSURL *url = [NSURL fileURLWithPath:_filePath];
-	NSData *data = [NSData dataWithContentsOfFile:_filePath];
-    [_webView loadData:data MIMEType:@"application/pdf" textEncodingName:@"UTF-8" baseURL:url];
+//第一种webview加载方式
+NSURL *url = [NSURL fileURLWithPath:_filePath];
+NSURLRequest *request = [NSURLRequest requestWithURL:url];
+[_webView loadRequest:request];
 
+//第二种webview加载方式
+   NSURL *url = [NSURL fileURLWithPath:_filePath];
+NSData *data = [NSData dataWithContentsOfFile:_filePath];
+   [_webView loadData:data MIMEType:@"application/pdf" textEncodingName:@"UTF-8" baseURL:url];
+   
+```
 
 失败！
 
-**转而使用Quartz 2D绘制pdf**
+**转而使用`Quartz 2D`绘制pdf**
 
-	- (void)drawRect:(CGRect)rect
-	{
-		CGContextRef context = UIGraphicsGetCurrentContext();
+```
+- (void)drawRect:(CGRect)rect
+{
+	CGContextRef context = UIGraphicsGetCurrentContext();
+   
+    //旋转坐标系
+    CGContextTranslateCTM(context, 0, self.frame.size.height-60);
+    CGContextScaleCTM(context, 1, -1);
     
-	    //旋转坐标系
-	    CGContextTranslateCTM(context, 0, self.frame.size.height-60);
-	    CGContextScaleCTM(context, 1, -1);
-	    
-	    CGPDFPageRef pdfPage = CGPDFDocumentGetPage(_pdfDoc, 1);
-	    
-	    CGContextSaveGState(context);
-	    
-	    CGAffineTransform pdfTransform = CGPDFPageGetDrawingTransform(pdfPage, kCGPDFCropBox, self.bounds, 0, true);
-	    
-	    CGContextConcatCTM(context, pdfTransform);
-	    CGContextDrawPDFPage(context, pdfPage);
-	    
-	    CGContextRestoreGState(context);
-	}
+    CGPDFPageRef pdfPage = CGPDFDocumentGetPage(_pdfDoc, 1);
+    
+    CGContextSaveGState(context);
+    
+    CGAffineTransform pdfTransform = CGPDFPageGetDrawingTransform(pdfPage, kCGPDFCropBox, self.bounds, 0, true);
+    
+    CGContextConcatCTM(context, pdfTransform);
+    CGContextDrawPDFPage(context, pdfPage);
+    
+    CGContextRestoreGState(context);
+}
+
+```
 	
 失败！甚至分割线都没了
 
@@ -59,33 +64,36 @@
 
 **使用QLPreviewController预览**
 
-	//导入QuickLook库
-	#import <QuickLook/QuickLook.h>
+```
+//导入QuickLook库
+#import <QuickLook/QuickLook.h>
 
-	- (void)viewDidLoad {
-		QLPreviewController *previ = [[QLPreviewController alloc] init];
-		previ.view.frame = CGRectMake(0, 0, self.view.width, self.view.height - 200);
-		previ.delegate = self;
-		previ.dataSource = self;
-		[self.view addSubview:previ.view];
-	}
-	
-	//实现代理方法
-	#pragma mark - 在此代理处加载需要显示的文件
-	- (NSURL *)previewController:(QLPreviewController *)previewController previewItemAtIndex:(NSInteger)idx
-	{
-	    return [NSURL fileURLWithPath:filePath];
-	}
-	
-	#pragma mark - 返回文件的个数
-	-(NSInteger)numberOfPreviewItemsInPreviewController:(QLPreviewController *)controller {
-	    return 1;
-	}
-	#pragma mark - 即将要退出浏览文件时执行此方法
-	-(void)previewControllerWillDismiss:(QLPreviewController *)controller {
-	    XDLog(@"退出");
-	}
-	
+- (void)viewDidLoad {
+	QLPreviewController *previ = [[QLPreviewController alloc] init];
+	previ.view.frame = CGRectMake(0, 0, self.view.width, self.view.height - 200);
+	previ.delegate = self;
+	previ.dataSource = self;
+	[self.view addSubview:previ.view];
+}
+
+//实现代理方法
+#pragma mark - 在此代理处加载需要显示的文件
+- (NSURL *)previewController:(QLPreviewController *)previewController previewItemAtIndex:(NSInteger)idx
+{
+    return [NSURL fileURLWithPath:filePath];
+}
+
+#pragma mark - 返回文件的个数
+-(NSInteger)numberOfPreviewItemsInPreviewController:(QLPreviewController *)controller {
+    return 1;
+}
+#pragma mark - 即将要退出浏览文件时执行此方法
+-(void)previewControllerWillDismiss:(QLPreviewController *)controller {
+    XDLog(@"退出");
+}
+
+```
+
 还是失败的没显示出来印章。
 
 **在github上找读取pdf的项目**
