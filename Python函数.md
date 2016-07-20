@@ -181,6 +181,34 @@ Python中有一个叫默认参数的东西可以解决这个问题
 
 ---
 
+*有两个默认参数的时候怎么办？*
+
+	def classname(name, age, city = 6, gender = 'Beijing'):
+		print(name, age, city, gender)
+
+调用结果:
+	
+	>>> classname('小明', 10)
+	小明 10 6 Beijing
+	>>> classname('小明', 10, 10, 'tianjing')
+	小明 10 10 tianjing
+	>>> 
+	>>> classname('小明', 10, 15)
+	小明 10 15 Beijing
+	>>> classname('小明', 10, 'shanghai')
+	小明 10 shanghai Beijing
+	>>> 
+
+前三次调用都没有问题，最后一次有问题了。
+
+有多个默认参数的时候，调用时按顺序写入参数没有问题，如果要跳过某个默认参数输入后面的默认参数，就要指定参数名
+
+	>>> classname('小明', 10, gender = 'shanghai')
+	小明 10 6 shanghai
+	>>> 
+
+---
+
 默认参数还有一个注意点: **默认参数必须为指向不可变的对象**
 
 举例：以list为默认参数，设置函数。 给定一个list，添加'z'元素返回lsit。默认list为['a']
@@ -228,4 +256,58 @@ Python中有一个叫默认参数的东西可以解决这个问题
 	>>> 
 
 这种实现方式类似于oc中在方法内部处理某个参数的操作，如果某个参数传了nil，则参数初始化为某个值
+
+## 可变参数
+
+计算多个数字的平方和，用list或者tuple包一组数，传入函数
+
+	def calc(num):
+		sum = 0
+		for n in num:
+			sum = sum + n * n
+		return sum
+
+调用结果
+
+	>>> calc([1,2,3])
+	14
+	>>> 
+
+---
+
+可以用可变参数，实现并不需要用list或tuple包裹数字，直接传入数 calc(1,2,3)
+
+代码实现：
+
+	def calc(*num):			#加一个*即可
+		sum = 0
+		for n in num:
+			sum = sum + n * n
+		return sum
+		
+调用结果
+
+	>>> calc(1,2,3)
+	14
+	>>> 
+
+---
+
+这时如果有一组list或者tuple数据要计算平方和，nums = [1,2,3], 单个元素取出传入calc函数 calc(nums[0], nums[1], nums[2])，这样做肯定是可以的，但是太麻烦，如果list有一百个元素就疯了。如果把整个list传入的话又会报错
+
+	>>> calc([1,2,3])
+	Traceback (most recent call last):
+	  File "<stdin>", line 1, in <module>
+	  File "/Users/inspiry/Desktop/myabs.py", line 7, in calc
+	    sum = sum + n * n
+	TypeError: can't multiply sequence by non-int of type 'list'
+	>>> 
+
+简单，传入list或者tuple的时候加一个*，
+
+Python允许添加*号， 把list或tuple变为可变参数传入函数中
+
+	>>> calc(*[1,2,3])
+	14
+
 
