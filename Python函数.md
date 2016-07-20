@@ -275,7 +275,7 @@ Python中有一个叫默认参数的东西可以解决这个问题
 
 ---
 
-可以用可变参数，实现并不需要用list或tuple包裹数字，直接传入数 calc(1,2,3)
+可以用可变参数，实现并不需要用list或tuple包裹数字，直接传入数 calc(1,2,3)。 可变参数会在函数调用时自动组装为一个tuple
 
 代码实现：
 
@@ -290,6 +290,10 @@ Python中有一个叫默认参数的东西可以解决这个问题
 	>>> calc(1,2,3)
 	14
 	>>> 
+
+**可变参数可以传入任意个参数包括0个。cals()也可以**
+
+**可变参数一般要放到所有参数的最后面，如果可变参数后面还跟着其他参数，这些参数有独特的含义——命名关键字参数**
 
 ---
 
@@ -311,3 +315,82 @@ Python允许添加*号， 把list或tuple变为可变参数传入函数中
 	14
 
 
+**默认参数和可变参数的概念swift中也有，应该是借鉴Python吧**
+
+## 关键字参数
+
+关键字参数是用两个星号(**)表示的，会在函数调用时自动组装为dict
+
+	def calc(name, age, **other):
+		print('name:', name, 'age:', age, 'other:', other)
+
+**other为关键字参数，可以传入任意个参数，也可以不传入。传入参数时是以key-value的方式传的
+
+调用:
+
+	>>> calc('mxd', 10)
+	name: mxd age: 10 other: {}
+	>>> calc('mxd', 18, a = 'a', b = 20)
+	name: mxd age: 18 other: {'a': 'a', 'b': 20}
+	
+类比可变参数可以把list添加一个*传入函数中作为参数，同样关键字参数也可以这样做。把一个dict 传入函数当做关键字参数。
+	
+	>>> oth = {'job': 'ios', 'book': 'macbook pro'}
+	>>> calc('mxd', 18, **oth)
+	name: mxd age: 18 other: {'job': 'ios', 'book': 'macbook pro'}
+
+注意点: 函数 calc(name, age, **other) 中的other得到了一个oth指向的dict，得到的其实是oth的一份拷贝，在函数内对其改变操作，不会影响外面的oth
+
+## 命名关键字参数
+
+命名关键字参数是给参数起名，关键字参数虽然以key-value的方式传入参数，给每个参数制定了key，但是这个key还是不能确定，调用者可以传入不受限制的关键字参数。
+
+限制关键字参数的key，就是指定关键字参数的名字，就用到了命名关键字参数
+
+	def calc(name, *, age):
+		print(name, age)
+
+命名关键字参数的写法是以*作为分隔符，分号后面的参数为命名关键字参数。可以跟多个参数，def calc(name, *, age, other):  这时age 和 other都是命名关键字
+
+调用时必须传入，且必须以 命名 = 内容 的key-value方式调用
+
+	>>> calc('mxd', age = 18)
+	mxd 18
+	>>> 
+	
+---
+
+之前说可变参数要放到参数最后面，后面再跟参数的话就是命名关键字参数了。
+
+	def calc(name, *age, other, zz):
+		print(name, age, other, zz)
+		
+other 和 zz 都是命名关键字了，必须传入，调用:
+
+	>>> calc('mxd', 18, 11, other = '2', zz = 3)
+	mxd (18, 11) 2 3
+	
+---
+
+命名关键字参数也可以指定参数默认值，指定other参数的默认值为'good'
+
+```
+def calc(name, *age, other = 'good', zz):
+	print(name, age, other, zz)
+	
+```
+
+调用
+
+```
+>>> calc('mxd', 32,22,22, zz = 'a')
+mxd (32, 22, 22) good a
+>>> calc('mxd', 10, other = 'no', zz = 'b')
+mxd (10,) no b
+>>> 
+
+```
+
+## 参数组合
+
+**5种参数：必选参数、默认参数、可变参数、关键字参数、命名关键字参数。在使用的时候如果有多种参数共同存在是，顺序必须为：必选参数、默认参数、可变参数、命名关键字参数、关键字参数**
