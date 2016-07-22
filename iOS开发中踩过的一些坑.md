@@ -25,6 +25,8 @@
 }
 ```
 
+![结果](http://oalg33nuc.bkt.clouddn.com/QQ20160722-0.png)
+
 ## pdf的展示
 
 项目里要求读取从服务器下载下来的pdf，pdf文件是一个发票文件，下载到本地Documents目录下，展示出来。问题来了，发票上的印章不见了。
