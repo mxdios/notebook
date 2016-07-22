@@ -320,7 +320,7 @@ StopIteration
 
 ## 创建生成器2
 
-有一种数列跟生成器运行机制类似，就是`斐波拉契数列`，除了开始的两个1，每个数都是前两个数的和。这个数列就是边循环边计算得出元素的。
+有一种数列跟生成器运行机制类似，就是`斐波拉契数列`，除了开始的两个1，每个数都是前两个数的和。这个数列就是边循环边计算出元素的。
 
 可以用函数打印这样的一个数列，输出指定位数的`斐波拉契数列`
 
@@ -372,7 +372,7 @@ def test(num):
 <generator object test at 0x101f0f8e0>
 >>> 
 ```
-w
+
 ### 生成器的执行原理
 
 在函数中添加了`yield`，这个函数就变成了生成器。这时就改变了Python函数的执行顺序，Python函数是顺序执行的，遇到return或最后一行语句就返回。如果变成了生成器，执行顺序就变成了遇到`yield`返回，下次执行会从上次返回`yield`的位置处继续执行
@@ -462,3 +462,58 @@ END
 
 总结：generator是在循环过程中不断计算出下一个元素的值，并在适当条件结束循环。对于函数改为的generator遇到return或者到函数的最后一行语句就是结束generator的指令。就是**函数结束，generator结束**
 
+# 迭代器
+
+可以直接作用于for循环的对象为可迭代对象: `Iterable`
+
+可迭代对象有：`list(数组)`、`tuple(元组)`、`dict(字典)`、`set(key的集合)`、`str(字符串)`、`generator(生成器/带yiel的函数)`
+
+引入`collections`模块里的`Iterable` 可以判断一个对象是否是`Iterable(可迭代对象)`
+
+```
+>>> from collections import Iterable
+>>> isinstance([], Iterable)
+True
+>>> isinstance((x for x in range(10)), Iterable)
+True
+>>> isinstance({}, Iterable)
+True
+>>> isinstance(100, Iterable)
+False
+>>> 
+```
+
+可迭代对象里的`generator`，不但可以作用于for循环，还可以被`next()`不断调用并返回下一个值，直到抛出错误`StopIteration`。这种可以被`next()`函数调用不断返回下一个值得对象被称为迭代器`Iterator`
+
+引入`collections`模块里的`Iterator` 可以判断一个对象是否是`Iterator(迭代器)`
+
+```
+>>> from collections import Iterator
+>>> isinstance([], Iterator)
+False
+>>> isinstance({}, Iterator)
+False
+>>> isinstance((x for x in range(10)), Iterator)
+True
+>>> isinstance(10, Iterator)
+False
+>>> 
+```
+可迭代对象里的`生成器generator`是`Iterator迭代器`
+
+其他的`list(数组)`、`tuple(元组)`、`dict(字典)`、`set(key的集合)`、`str(字符串)` 虽然是`可迭代对象Iterable`，但不是`Iterator(迭代器)`
+
+可以用`iter()`函数把这些可迭代对象变为迭代器
+
+```
+>>> isinstance(iter({}), Iterator)
+True
+>>> isinstance(iter([]), Iterator)
+True
+>>> isinstance(iter(10), Iterator)   #int类型连可迭代对象都不是，无法转为迭代器
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'int' object is not iterable
+>>> 
+```
+为什么`list`这些可迭代对象不是迭代器呢？因为迭代器`Iterator`是一个数据流，可以存放无限大的数据，只是一个有序序列，不可能知道他的长度，只能不断`next()`计算下一个数据，只有在需要下一个数据的时候才去计算，是一种惰性计算。而`list`等这类可迭代对象都是可知长度的，不能`next()`循环计算下一个值。
