@@ -11,7 +11,7 @@
 
 还有就是点击编辑按钮，cell进入编辑状态，点击红色减号button，出现删除按钮，点击删除完成删除操作。这时会出现问题，cell上的内容遮盖了删除按钮，如下图所示。
 
-![如图](http://oalg33nuc.bkt.clouddn.com/image/Untitleds.gif =500x350)
+![如图](http://oalg33nuc.bkt.clouddn.com/image/Untitleds.gif)
 
 解决这个问题，只需要在自定义cell里加如下代码
 
