@@ -2,7 +2,28 @@
 
 ## 微信的openid
 
-- 微信的openid对于某个用户来说并不是唯一的，某个用户对某个公众号或者对某个微信开放平台下某个appid生成的是唯一的。appid改变，openid也会改变。公众号下和app下获得的openid不同，现阶段无法实现相同操作。使用unionid打通用户，微信开放平台上绑定了公众号，这时获取的unionid会一致。
+微信的openid对于某个用户来说并不是唯一的，某个用户对某个公众号或者对某个微信开放平台下某个appid生成的是唯一的。appid改变，openid也会改变。公众号下和app下获得的openid不同，现阶段无法实现相同操作。使用unionid打通用户，微信开放平台上绑定了公众号，这时获取的unionid会一致。
+
+
+## Cell进入编辑状态，内容覆盖编辑按钮
+
+删除一条cell时，最常用的方法就是侧滑删除。
+
+还有就是点击编辑按钮，cell进入编辑状态，点击红色减号button，出现删除按钮，点击删除完成删除操作。这时会出现问题，cell上的内容遮盖了删除按钮，如下图所示。
+
+![如图](http://oalg33nuc.bkt.clouddn.com/image/Untitleds.gif =500x350)
+
+解决这个问题，只需要在自定义cell里加如下代码
+
+```
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    if (self.isEditing) {
+        [self sendSubviewToBack:self.contentView];
+    }
+}
+```
 
 ## pdf的展示
 
@@ -67,7 +88,6 @@ NSData *data = [NSData dataWithContentsOfFile:_filePath];
 ```
 //导入QuickLook库
 #import <QuickLook/QuickLook.h>
-
 - (void)viewDidLoad {
 	QLPreviewController *previ = [[QLPreviewController alloc] init];
 	previ.view.frame = CGRectMake(0, 0, self.view.width, self.view.height - 200);
@@ -75,14 +95,12 @@ NSData *data = [NSData dataWithContentsOfFile:_filePath];
 	previ.dataSource = self;
 	[self.view addSubview:previ.view];
 }
-
 //实现代理方法
 #pragma mark - 在此代理处加载需要显示的文件
 - (NSURL *)previewController:(QLPreviewController *)previewController previewItemAtIndex:(NSInteger)idx
 {
     return [NSURL fileURLWithPath:filePath];
 }
-
 #pragma mark - 返回文件的个数
 -(NSInteger)numberOfPreviewItemsInPreviewController:(QLPreviewController *)controller {
     return 1;
@@ -91,7 +109,6 @@ NSData *data = [NSData dataWithContentsOfFile:_filePath];
 -(void)previewControllerWillDismiss:(QLPreviewController *)controller {
     XDLog(@"退出");
 }
-
 ```
 
 还是失败的没显示出来印章。
@@ -113,7 +130,7 @@ NSData *data = [NSData dataWithContentsOfFile:_filePath];
 
 *在知乎上找到一个大神的发言，解释了PDF有的内容读不出来的原因。iOS 对矢量图片的支持如何？ 直接引用其中的一段话:"iOS 的 Core Graphics 框架底层和 OS X 一样，都是基于 PDF 的。所以 iOS 用 PDF 很方便，比如 iOS 的 Quick Look 框架就可以直接看 PDF。如果要是只看文档那样简单的 PDF 的话，一般是没有什么问题的。不过，如果要是想看用 AI 制作的，带有多重描边、填充、网格渐变、阴影、多图层等东西的复杂 PDF 图形的话，有很大机率会出现问题。比如，在 iOS 和 OS X 上常出现的一个问题是，PDF 文稿里隐藏的图层、图形被显示出来。如果查看复杂一些的 PDF，很可能在 Adobe Illustrator、OS X、iOS、Adobe Reader 下查看的效果都不一样。所以说，PDF 虽然一般被认为是跨平台的「安全格式」，不过也并不是 100% 保险。 Adobe Reader 的 iOS 版很可能没有使用 iOS 系统自带的 PDF 和矢量绘图 API，而是自己实现了一个，因此通常 Adobe Reader 显示复杂一些的 PDF 比使用 iOS 原生 API 解析 PDF 的 App 更准确一些。还有， 无论是使用 iOS 原生的 Quick Look 还是用 Adobe Reader 查看，渲染复杂的 PDF 有可能特别慢"。公司PDF的签章好像就是多图层，在文字的底下。*
 
-*找了好久，终于找到了一个能读取多图层的PDF文件的框架 - MuPDF*
+**找了好久，终于找到了一个能读取多图层的PDF文件的框架 - MuPDF**
 
 得出一个结论，使用Mupdf
 
