@@ -15,11 +15,17 @@
 
 ## Python学习
 
+原文出处廖老师官方网站，本文只是学习笔记，感谢廖老师提供优秀的Python学习资料。
+
+想系统学习Python的请移步[廖雪峰的官方网站Python教程](http://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000)
+
 [Python基础](https://github.com/mxdios/notebook/blob/master/Python%E5%9F%BA%E7%A1%80.md)
 
 [Python函数](https://github.com/mxdios/notebook/blob/master/Python%E5%87%BD%E6%95%B0.md)
 
-[Python操作](https://github.com/mxdios/notebook/blob/master/Python%E6%93%8D%E4%BD%9C.md)
+[Python高级特性](https://github.com/mxdios/notebook/blob/master/Python%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7.md)
+
+[Python函数式编程](https://github.com/mxdios/notebook/blob/master/Python%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B.md)
 
 ## Swift学习
 
