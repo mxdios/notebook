@@ -27,6 +27,38 @@
 
 ![结果](http://oalg33nuc.bkt.clouddn.com/QQ20160722-0.png)
 
+
+## View中部分内嵌UIWebView
+
+在开发中，有的界面要求部分原生，部分根据服务器返回的URL地址显示网页。这就需要计算这部分网页的size。不然就会显示不全或者留白太多
+
+创建UIWebView 并加载页面
+
+```
+UIWebView *webview = [[UIWebView alloc] init]; //创建webview
+webview.delegate = self;  //设置代理
+[webview loadHTMLString:url baseURL:nil]; //加载网页
+[self.view addSubview:webview]; //添加到view上
+```
+
+在webView的代理方法中获取网页实际size
+
+```
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    webView.width = self.view.width; //实际宽度
+    webView.height = [webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight"].floatValue; //实际高度
+}
+```
+
+## 设置UITextField的placeholder字体的颜色和字号
+
+```
+textField.placeholder = @"请输入用户名";  
+[textField setValue:[UIColor redColor] forKeyPath:@"_placeholderLabel.textColor"];  
+[textField setValue:[UIFont boldSystemFontOfSize:16] forKeyPath:@"_placeholderLabel.font"];
+```
+
 ## pdf的展示
 
 项目里要求读取从服务器下载下来的pdf，pdf文件是一个发票文件，下载到本地Documents目录下，展示出来。问题来了，发票上的印章不见了。
