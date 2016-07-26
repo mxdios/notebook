@@ -33,7 +33,9 @@
 
 ## React Native学习
 
-[React Native基础](https://github.com/mxdios/notebook/blob/master/react_navtive.md)
+[React Native准备工作](https://github.com/mxdios/notebook/blob/master/ReactNative%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C.md)
+
+[React Native第一个项目](https://github.com/mxdios/notebook/blob/master/ReactNative%E7%AC%AC%E4%B8%80%E4%B8%AA%E9%A1%B9%E7%9B%AE.md)
 
 ## 其他
 
