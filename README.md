@@ -4,7 +4,7 @@
 
 ## iOS开发
 
-[iOS开发中踩过的一些坑](https://github.com/mxdios/notebook/blob/master/iOS%E5%BC%80%E5%8F%91%E4%B8%AD%E8%B8%A9%E8%BF%87%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9D%91.md)
+[iOS开发笔记](https://github.com/mxdios/notebook/blob/master/iOS%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0.md)
 
 [iOS9的适配特性](https://github.com/mxdios/notebook/blob/master/ios9%E7%9A%84%E9%80%82%E9%85%8D%E7%89%B9%E6%80%A7.md)
 
