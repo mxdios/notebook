@@ -63,7 +63,7 @@ textField.placeholder = @"请输入用户名";
 
 # 按钮的拖动效果和点击事件并存
 
-![image](http://oalg33nuc.bkt.clouddn.com/image/Untitleds232324.gif)
+需求是一个按钮可以在屏幕中随意拖动，不能拖出屏幕外。距离屏幕最边缘有10像素的距离。拖动结束后，根据距离左右两侧哪侧近，靠到近的一侧。
 
 定义`Bool`类型的全部变量，控制是否执行点击事件
 
