@@ -1,11 +1,13 @@
-# iOS开发中踩过的一些坑
+# iOS开发笔记
 
-## 微信的openid
+**记录了在iOS开发中踩过的坑和一些问题解决**
+
+# 微信的openid
 
 微信的openid对于某个用户来说并不是唯一的，某个用户对某个公众号或者对某个微信开放平台下某个appid生成的是唯一的。appid改变，openid也会改变。公众号下和app下获得的openid不同，现阶段无法实现相同操作。使用unionid打通用户，微信开放平台上绑定了公众号，这时获取的unionid会一致。
 
 
-## Cell进入编辑状态，内容覆盖编辑按钮
+# Cell进入编辑状态，内容覆盖编辑按钮
 
 删除一条cell时，最常用的方法就是侧滑删除。
 
@@ -28,7 +30,7 @@
 ![结果](http://oalg33nuc.bkt.clouddn.com/QQ20160722-0.png)
 
 
-## View中部分内嵌UIWebView
+# View中部分内嵌UIWebView
 
 在开发中，有的界面要求部分原生，部分根据服务器返回的URL地址显示网页。这就需要计算这部分网页的size。不然就会显示不全或者留白太多
 
@@ -51,7 +53,7 @@ webview.delegate = self;  //设置代理
 }
 ```
 
-## 设置UITextField的placeholder字体的颜色和字号
+# 设置UITextField的placeholder字体的颜色和字号
 
 ```
 textField.placeholder = @"请输入用户名";  
@@ -59,7 +61,63 @@ textField.placeholder = @"请输入用户名";
 [textField setValue:[UIFont boldSystemFontOfSize:16] forKeyPath:@"_placeholderLabel.font"];
 ```
 
-## pdf的展示
+# 按钮的拖动效果和点击事件并存
+
+![image](http://oalg33nuc.bkt.clouddn.com/image/Untitleds232324.gif)
+
+定义`Bool`类型的全部变量，控制是否执行点击事件
+
+```
+BOOL _isClick;
+```
+
+创建按钮添加拖动和点击事件
+
+```
+//添加点击事件
+[btn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+//添加拖动事件
+[btn addTarget:self action:@selector(dragMoving:withEvent:)forControlEvents: UIControlEventTouchDragInside];
+//添加拖动结束时的事件
+[btn addTarget:self action:@selector(dragEnded:withEvent:)forControlEvents: UIControlEventTouchUpInside];
+```
+
+实现事件方法
+
+```
+//拖动过程中
+- (void)dragMoving:(UIControl *)c withEvent:ev
+{
+    CGPoint point = [[[ev allTouches] anyObject] locationInView:self.view];   
+    point.x = MIN(MAX(point.x, btn.width * 0.5 + 10) , self.view.width - btn.width * 0.5 - 10);//范围
+    point.y = MIN(MAX(point.y, 100), self.view.height - btn.height * 0.5 - 10);//范围
+    c.center = point;
+    _isClick = NO;
+}
+//拖动结束
+- (void)dragEnded:(UIControl *)c withEvent:ev
+{
+    XDLog(@"dragEnded....");   
+    CGPoint point = [[[ev allTouches] anyObject] locationInView:self.view];
+    point.x = MIN(MAX(point.x, btn.width * 0.5 + 10), self.view.width - btn.width * 0.5 - 10);//范围
+    point.y = MIN(MAX(point.y, 100) , self.view.height - btn.height * 0.5 - 10);//范围
+    c.center = point;
+    [UIView animateWithDuration:0.2 animations:^{
+        c.centerX = c.centerX < self.view.width - c.centerX ? 30 : self.view.width - 30;
+    }];
+    _isClick = YES;
+}
+//点击事件
+- (void)btnClick:(UIButton *)btn
+{
+    if (_isClick) {
+    	//点击方法
+    }
+}
+```
+
+
+# pdf的展示
 
 项目里要求读取从服务器下载下来的pdf，pdf文件是一个发票文件，下载到本地Documents目录下，展示出来。问题来了，发票上的印章不见了。
 
