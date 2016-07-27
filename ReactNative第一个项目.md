@@ -22,7 +22,7 @@ react-native init firstReactNative
 
 创建完毕项目打开`index.ios.js`文件，文件上部有如下代码
 
-```
+```Objective-C
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -45,7 +45,7 @@ AppRegistry.registerComponent('firstReactNative', () => firstReactNative);
 
 `Text` `View` 是一些常用的控件组件，`Image`组件添加到这下面，注意要在`View`后面写`,`(最后一个后面的`,`可写可不写)
 
-```
+```Objective-C
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -60,7 +60,7 @@ import {
 
 在任意位置添加变量数据`URLDATA` (不要在其他方法{}内添加)
 
-```
+```js
 var URLDATA = [
 	{title: '标题', year: '2016', posters:{thumbnail: 'http://i.imgur.com/UePbdph.jpg'}}
 ];
@@ -74,7 +74,7 @@ iOS9中http请求需要添加允许任意的请求方式，在`info.plist`里添
 
 在`class firstReactNative extends Component {` 里面更改为如下代码：
 
-```
+```js
 render() {
     var movie = URLDATA[0]
     return (
@@ -97,7 +97,7 @@ render() {
 
 创建新的渲染样式
 
-```
+```js
 var styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -114,7 +114,7 @@ var styles = StyleSheet.create({
 
 并把图片的渲染样式`thumbnail`添加到组件`Image`上
 
-```
+```js
 <Image 
 	source = {{uri: movie.posters.thumbnail}}
 	style = {styles.thumbnail}
@@ -131,7 +131,7 @@ var styles = StyleSheet.create({
 
 在`styles`里添加几个样式
 
-```
+```js
 rightContainer: { //存放文字view的样式
 	flex: 1, //是让里面存放的元素具有相同的宽度，忽略存放内容。css样式属性。
 },
@@ -147,7 +147,7 @@ year: {//简介样式
 
 修改`return ()`里面的代码，将新添加的样式添加到相应组件上
 
-```
+```js
 return (
   <View style={styles.container}>
   	<Image 
@@ -179,13 +179,13 @@ return (
 
 在文件开头`import`的下面定义接口地址变量
 
-```
+```js
 var REQUEST_URL = 'https://raw.githubusercontent.com/facebook/react-native/master/docs/MoviesExample.json';
 ```
 
 把下面代码放到`render()`函数之前。在网络获取之前初始化一个null状态，根据`this.state.movies == null`判断数据是否抓取成功。
 
-```
+```js
 constructor(props) {
 	super(props);
 	this.state = {
@@ -197,14 +197,14 @@ constructor(props) {
 
 添加React组件生命周期方法`componentDidMount()`，在组件加载完毕之后执行，只执行一次，在这里进行数据请求。
 
-```
+```js
 componentDidMount() {
 	this.fetchData();
 }
 ```
 写`fetchData()`函数，网络请求
 
-```
+```js
 fetchData() {
 	fetch(REQUEST_URL)
 		.then((response) => response.json())
@@ -219,7 +219,7 @@ fetchData() {
 
 修改原来的render函数，修改样式
 
-```
+```js
 render() {
 	if (!this.state.movies) { //如果没有数据 返回renderLoadingView()
 		return this.renderLoadingView();
@@ -231,7 +231,7 @@ render() {
 
 实现`renderLoadingView()`函数和`renderMovie()`函数
 
-```
+```js
 renderLoadingView() {//添加加载提示
 	return (
 		<View style = {styles.container}>
@@ -269,7 +269,7 @@ renderMovie(movie) {//拿到网络获取的数据，添加到控件上
 
 修改render函数，把返回一条数据的代码修改为渲染包含多个电影信息的`ListView`
 
-```
+```js
 render() {
 	if (!this.state.loaded) {
 		return this.renderLoadingView();
@@ -286,7 +286,7 @@ render() {
 
 修改`constructor(props)`代码，不再使用`this.state.movies`来存放数据，把数据存放到`dataSource`里面，可以根据布尔值`this.state.loaded`来判断是否加载完毕
 
-```
+```js
 constructor(props) {
 	super(props);
 	this.state = {
@@ -301,7 +301,7 @@ constructor(props) {
 
 修改`fetchData`方法，把数据更新到dataSource
 
-```
+```js
 fetchData() {
 	fetch(REQUEST_URL)
 		.then((response) => response.json())
@@ -317,7 +317,7 @@ fetchData() {
 
 添加样式`listView`
 
-```
+```css
 listView: {
   	paddingTop: 20,
   	backgroundColor: '#F5FCFF',
