@@ -42,3 +42,5 @@
 [gitlab使用](https://github.com/mxdios/notebook/blob/master/gitlab%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4.md)
 
 [mac终端命令](https://github.com/mxdios/notebook/blob/master/mac%E7%BB%88%E7%AB%AF%E5%91%BD%E4%BB%A4.md)
+
+[一些问题](https://github.com/mxdios/notebook/blob/master/%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98.md)
