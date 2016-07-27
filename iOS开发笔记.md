@@ -36,7 +36,7 @@
 
 创建UIWebView 并加载页面
 
-```
+```Objective-C
 UIWebView *webview = [[UIWebView alloc] init]; //创建webview
 webview.delegate = self;  //设置代理
 [webview loadHTMLString:url baseURL:nil]; //加载网页
@@ -45,7 +45,7 @@ webview.delegate = self;  //设置代理
 
 在webView的代理方法中获取网页实际size
 
-```
+```Objective-C
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
     webView.width = self.view.width; //实际宽度
@@ -55,7 +55,7 @@ webview.delegate = self;  //设置代理
 
 # 设置UITextField的placeholder字体的颜色和字号
 
-```
+```Objective-C
 textField.placeholder = @"请输入用户名";  
 [textField setValue:[UIColor redColor] forKeyPath:@"_placeholderLabel.textColor"];  
 [textField setValue:[UIFont boldSystemFontOfSize:16] forKeyPath:@"_placeholderLabel.font"];
@@ -67,13 +67,13 @@ textField.placeholder = @"请输入用户名";
 
 定义`Bool`类型的全部变量，控制是否执行点击事件
 
-```
+```Objective-C
 BOOL _isClick;
 ```
 
 创建按钮添加拖动和点击事件
 
-```
+```Objective-C
 //添加点击事件
 [btn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
 //添加拖动事件
@@ -84,7 +84,7 @@ BOOL _isClick;
 
 实现事件方法
 
-```
+```Objective-C
 //拖动过程中
 - (void)dragMoving:(UIControl *)c withEvent:ev
 {
@@ -127,7 +127,7 @@ BOOL _isClick;
 
 **最开始使用了最简单的展示pdf文件的方法：UIWebView**
 
-```
+```Objective-C
 NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 NSString *documentsDirectory = [paths objectAtIndex:0];
 NSString *filePDF = [documentsDirectory  stringByAppendingPathComponent:@"file.pdf"]
@@ -138,37 +138,30 @@ NSURLRequest *request = [NSURLRequest requestWithURL:url];
 [_webView loadRequest:request];
 
 //第二种webview加载方式
-   NSURL *url = [NSURL fileURLWithPath:_filePath];
+NSURL *url = [NSURL fileURLWithPath:_filePath];
 NSData *data = [NSData dataWithContentsOfFile:_filePath];
-   [_webView loadData:data MIMEType:@"application/pdf" textEncodingName:@"UTF-8" baseURL:url];
-   
+[_webView loadData:data MIMEType:@"application/pdf" textEncodingName:@"UTF-8" baseURL:url];
 ```
 
 失败！
 
 **转而使用`Quartz 2D`绘制pdf**
 
-```
+
+```Objective-C
 - (void)drawRect:(CGRect)rect
 {
 	CGContextRef context = UIGraphicsGetCurrentContext();
-   
     //旋转坐标系
     CGContextTranslateCTM(context, 0, self.frame.size.height-60);
     CGContextScaleCTM(context, 1, -1);
-    
     CGPDFPageRef pdfPage = CGPDFDocumentGetPage(_pdfDoc, 1);
-    
     CGContextSaveGState(context);
-    
     CGAffineTransform pdfTransform = CGPDFPageGetDrawingTransform(pdfPage, kCGPDFCropBox, self.bounds, 0, true);
-    
     CGContextConcatCTM(context, pdfTransform);
     CGContextDrawPDFPage(context, pdfPage);
-    
     CGContextRestoreGState(context);
 }
-
 ```
 	
 失败！甚至分割线都没了
@@ -177,7 +170,7 @@ NSData *data = [NSData dataWithContentsOfFile:_filePath];
 
 **使用QLPreviewController预览**
 
-```
+```Objective-C
 //导入QuickLook库
 #import <QuickLook/QuickLook.h>
 - (void)viewDidLoad {

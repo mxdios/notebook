@@ -19,22 +19,26 @@ http请求，cookie会一直存在，任何一次http请求都会携带cookie到
 
 **保存cookie**
 
-	NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:@"接口地址"]];
-	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:cookies];
-	[[NSUserDefaults standardUserDefaults] setObject:data forKey:@"UserDefaultsCookie"];
+```Objective-C
+NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:@"接口地址"]];
+NSData *data = [NSKeyedArchiver archivedDataWithRootObject:cookies];
+[[NSUserDefaults standardUserDefaults] setObject:data forKey:@"UserDefaultsCookie"];
+```
 
 在获取用户信息的接口请求时获取cookie，并用userDefaults保存到plist里。
 
 **设置cookie**
-    
-    NSData *cookiesdata = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsCookie];
-    if([cookiesdata length]) {
-        NSArray *cookies = [NSKeyedUnarchiver unarchiveObjectWithData:cookiesdata];
-        NSHTTPCookie *cookie;
-        for (cookie in cookies) {
-            [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:cookie];
-        }
+
+```Objective-C    
+NSData *cookiesdata = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsCookie];
+if([cookiesdata length]) {
+    NSArray *cookies = [NSKeyedUnarchiver unarchiveObjectWithData:cookiesdata];
+    NSHTTPCookie *cookie;
+    for (cookie in cookies) {
+        [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:cookie];
     }
+}
+```
 
 *设置cookie在程序启动的时候设置*
 

@@ -33,37 +33,39 @@ iOS9的后台定位，如果不适配iOS9，则不能偷偷的在后台定位，
 
 请求后台定位权限
 
-	 // 1. 实例化定位管理器
-	_locationManager = [[CLLocationManager alloc] init];
-	// 2. 设置代理
-	_locationManager.delegate = self;
-	// 3. 定位精度
-	[_locationManager setDesiredAccuracy:kCLLocationAccuracyBest];
-	// 4.请求用户权限：分为：⓵只在前台开启定位⓶在后台也可定位，
-	//注意：建议只请求⓵和⓶中的一个，如果两个权限都需要，只请求⓶即可，
-	//⓵⓶这样的顺序，将导致bug：第一次启动程序后，系统将只请求⓵的权限，⓶的权限系统不会请求，只会在下一次启动应用时请求⓶
-	if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8) {
-	    //[_locationManager requestWhenInUseAuthorization];//⓵只在前台开启定位
-	    [_locationManager requestAlwaysAuthorization];//⓶在后台也可定位
-	}
-	// 5.iOS9新特性：将允许出现这种场景：同一app中多个location manager：一些只能在前台定位，另一些可在后台定位（并可随时禁止其后台定位）。
-	if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 9) {
-	    _locationManager.allowsBackgroundLocationUpdates = YES;
-	}
-	// 6. 更新用户位置
-	[_locationManager startUpdatingLocation];
-
+```Objective-C
+// 1. 实例化定位管理器
+_locationManager = [[CLLocationManager alloc] init];
+// 2. 设置代理
+_locationManager.delegate = self;
+// 3. 定位精度
+[_locationManager setDesiredAccuracy:kCLLocationAccuracyBest];
+// 4.请求用户权限：分为：⓵只在前台开启定位⓶在后台也可定位，
+//注意：建议只请求⓵和⓶中的一个，如果两个权限都需要，只请求⓶即可，
+//⓵⓶这样的顺序，将导致bug：第一次启动程序后，系统将只请求⓵的权限，⓶的权限系统不会请求，只会在下一次启动应用时请求⓶
+if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8) {
+	//[_locationManager requestWhenInUseAuthorization];//⓵只在前台开启定位
+	[_locationManager requestAlwaysAuthorization];//⓶在后台也可定位
+}
+// 5.iOS9新特性：将允许出现这种场景：同一app中多个location manager：一些只能在前台定位，另一些可在后台定位（并可随时禁止其后台定位）。
+if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 9) {
+	_locationManager.allowsBackgroundLocationUpdates = YES;
+}
+// 6. 更新用户位置
+[_locationManager startUpdatingLocation];
+```
 
 还需要添加info.plist配置
 
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>应用请求后台定位权限</string>
+```
+<key>NSLocationAlwaysUsageDescription</key>
+<string>应用请求后台定位权限</string>
 	
-	<key>UIBackgroundModes</key>
-	<array>
-	    <string>location</string>
-	</array>
-
+<key>UIBackgroundModes</key>
+<array>
+    <string>location</string>
+</array>
+```
 
 ## 企业级应用分发问题
 

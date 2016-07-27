@@ -2,7 +2,7 @@
 
 切片就是切割list或者tuple里面的元素，获取某个或某段元素。
 
-```
+```Python
 >>> L = ['a', 'b', 'c', 'd', 'e']
 >>> L[:1]
 ['a']
@@ -17,7 +17,7 @@
 
 同样支持倒数切片，倒数第一个元素是的索引是`-1`
 
-```
+```Python
 >>> L[-2:-1]
 ['d']
 >>> L[-1:]
@@ -29,7 +29,7 @@
 
 切片操作不仅可以切割相邻的元素，还可以分段切割
 
-```
+```Python
 >>> l = [1,2,3,4,5,6,7,8,9,10]
 >>> l[::2]
 [1, 3, 5, 7, 9]
@@ -44,7 +44,7 @@
 
 对字符串也同样适用，返回的还是字符串
 
-```
+```Python
 >>> str = '123456789'
 >>> str[1:4]
 '234'
@@ -63,7 +63,7 @@
 
 ## 迭代list
 
-```
+```Python
 >>> l = [1, 2, 3]
 >>> for a in l:
 ...     print(a)
@@ -76,7 +76,7 @@
 
 ## 迭代tuple
 
-```
+```Python
 >>> tup = (1,2,3)
 >>> for a in tup:
 ...     print(a)
@@ -93,7 +93,7 @@ dict是key-value存储的，默认迭代的是key， 若想迭代value需要`.va
 
 dict的存储顺序是无序的，迭代结果的顺序并不一定按照顺序排列
 
-```
+```Python
 >>> dict = {1:'a', 2:'b', 3:'c'}
 >>> for d in dict:					#默认迭代key
 ...     print(d)
@@ -119,7 +119,7 @@ c
 
 ## 迭代set
 
-```
+```Python
 >>> sets = set([1,2,3,4,4,2])
 >>> sets
 {1, 2, 3, 4}
@@ -135,7 +135,7 @@ c
 
 ## 迭代str
 
-```
+```Python
 >>> str = 'abc'
 >>> for s in str:
 ...     print(s)
@@ -150,7 +150,7 @@ c
 
 迭代一个list，还需要显示list的索引。在Java或oc中有`for(int i = 0; i < list.count; i ++)`这样的for循环，打印i就是list的索引。 在Python中有`enumerate()`函数，能拿到list的索引
 
-```
+```Python
 >>> l = ['a','b','c']
 >>> for i, s in enumerate(l):
 ...     print(i, s)
@@ -165,7 +165,7 @@ c
 
 迭代时两个变量，比如一个list里面放了tuple `[(1,2),(3,4),(5,6)]` 可以引入两个迭代变量，遍历内容。 注意点是tuple的元素个数必须固定，跟给定的迭代变量参数个数相同，否则会报错
 
-```
+```Python
 for a, b in [(1,2),(3,4),(5,6)]
 	print(a, b)
 # 结果
@@ -178,7 +178,7 @@ for a, b in [(1,2),(3,4),(5,6)]
 
 引入`collections`模块的`Iterable`做类型判断
 
-```
+```Python
 >>> from collections import Iterable
 >>> isinstance(10, Iterable)   #整数不可迭代
 False
@@ -199,7 +199,7 @@ True
 
 生成`[1,2,3,4]` 使用`list(range(1,5))`，x从`1`到`5`不包括`5`
 
-```
+```Python
 >>> list(range(1,5))
 [1, 2, 3, 4]
 >>>
@@ -208,7 +208,7 @@ True
 
 如果要生成`[1*1, 2*2, 3*3, 4*4, 5*5]`的list的话怎么生成呢？ 可以用for循环
 
-```
+```Python
 >>> l = []
 >>> for x in range(1,5):
 ...     l.append(x * x)
@@ -219,7 +219,7 @@ True
 
 如果要用列表生成式的话，只需要一行代码就能搞定
 
-```
+```Python
 >>> [x * x for x in range(1,5)]
 [1, 4, 9, 16]
 >>>
@@ -231,7 +231,7 @@ True
 
 列表生成式还可以增加筛选条，比如，生成1-10(包括10)中所有偶数的平方组成的list
 
-```
+```Python
 >>> [x * x for x in range(1,11) if x % 2 == 0]
 [4, 16, 36, 64, 100]
 ```
@@ -242,14 +242,14 @@ True
 
 需求：列出两个list里元素的两两一起的所有组合
 
-```
+```Python
 >>> [n + m for n in ['a','b','c','d'] for m in ['A','B','C','D']]
 ['aA', 'aB', 'aC', 'aD', 'bA', 'bB', 'bC', 'bD', 'cA', 'cB', 'cC', 'cD', 'dA', 'dB', 'dC', 'dD']
 >>>
 ```
 根据打印结果知道，其实就是循环嵌套。这是二层嵌套，其实也可以有n层嵌套，可以试试。下面是三次for循环，可以自己试试
 
-```
+```Python
 >>> [n + m + x for n in ['a','b','c','d'] for m in ['A','B','C','D'] for x in '1234']
 ```
 
@@ -257,7 +257,7 @@ True
 
 嵌套循环其实就是多个变量的列表生成式，一层循环的多个变量同样适用。比如迭代(遍历)dict，同时迭代出key-value，然后组成list
 
-```
+```Python
 >>> [str(k) + v for k,v in {1:'a', 2:'b', 3:'c', 4:'d'}.items()]   #str()是类型转换，迭代出来的k是int类型，要想与字符串拼接要先转成str类型
 ['1a', '2b', '3c', '4d']
 >>>
@@ -275,7 +275,7 @@ True
 
 创建一个`generator`方法很多，其中一种只要把生成式的`[]`换成`()`即可
 
-```
+```Python
 >>> [x * x for x in range(1,10)]             #列表生成式创建list
 [1, 4, 9, 16, 25, 36, 49, 64, 81]
 >>> (x * x for x in range(1,10))				#创建generator
@@ -286,7 +286,7 @@ True
 
 生成器是边循环边计算元素的，那怎么打印其中每个元素呢？有一个函数`next()`
 
-```
+```Python
 >>> g = (x for x in range(3))
 >>> g
 <generator object <genexpr> at 0x1025e0938>
@@ -307,7 +307,7 @@ StopIteration
 
 这种方法读取元素实在是太low了，generator也是可迭代对象，完全可以用for循环迭代
 
-```
+```Python
 >>> g = (x for x in range(3))
 >>> for z in g:
 ...     print(z)
@@ -324,7 +324,7 @@ StopIteration
 
 可以用函数打印这样的一个数列，输出指定位数的`斐波拉契数列`
 
-```
+```Python
 def test(num):
 	n, a, b = 0, 0, 1
 	while n < num:
@@ -339,7 +339,7 @@ def test(num):
 
 比如`a, b = b, a + b`,在赋值的时候，`a = b` 和 `b = a + b`是同时进行的，最终的结果都是在`a = 1, b = 2`的前提下得到的。
 
-```
+```Python
 >>> a = 1
 >>> b = 2
 >>> a, b = b, a + b
@@ -354,7 +354,7 @@ def test(num):
 ---
 上文中的`test(num)`函数变为生成器很简单，只需要把函数的`print(b)`换成`yield b`
 
-```
+```Python
 def test(num):
 	n, a, b = 0, 0, 1
 	while n < num:
@@ -367,7 +367,7 @@ def test(num):
 
 调用结果，返回的是一个generator对象:
 
-```
+```Python
 >>> test(9)
 <generator object test at 0x101f0f8e0>
 >>> 
@@ -379,7 +379,7 @@ def test(num):
 
 例如定义函数
 
-```
+```Python
 def test():
 	print(1)
 	yield 'a'
@@ -393,7 +393,7 @@ def test():
 ```
 执行调用：
 
-```
+```Python
 >>> test()
 <generator object test at 0x101ae08e0>   #test()函数是生成器generator
 >>> a = test()
@@ -418,7 +418,7 @@ StopIteration: END
 
 和第一种创建的生成器一样，用for循环遍历该生成器 test()
 
-```
+```Python
 >>> for n in test():
 ...     print(n)
 ... 
@@ -438,7 +438,7 @@ d
 
 用循环遍历`test()`，并捕获异常，拿到`return`返回的`END`值
 
-```
+```Python
 >>> a = test()
 >>> while True:
 ...     try:
@@ -470,7 +470,7 @@ END
 
 引入`collections`模块里的`Iterable` 可以判断一个对象是否是`Iterable(可迭代对象)`
 
-```
+```Python
 >>> from collections import Iterable
 >>> isinstance([], Iterable)
 True
@@ -487,7 +487,7 @@ False
 
 引入`collections`模块里的`Iterator` 可以判断一个对象是否是`Iterator(迭代器)`
 
-```
+```Python
 >>> from collections import Iterator
 >>> isinstance([], Iterator)
 False
@@ -505,7 +505,7 @@ False
 
 可以用`iter()`函数把这些可迭代对象变为迭代器
 
-```
+```Python
 >>> isinstance(iter({}), Iterator)
 True
 >>> isinstance(iter([]), Iterator)
