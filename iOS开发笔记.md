@@ -17,7 +17,7 @@
 
 解决这个问题，只需要在自定义cell里加如下代码
 
-```
+```Objective-C
 - (void)layoutSubviews
 {
     [super layoutSubviews];
