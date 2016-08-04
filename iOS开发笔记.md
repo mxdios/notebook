@@ -116,6 +116,51 @@ BOOL _isClick;
 }
 ```
 
+# UITableViewCell左滑编辑字体颜色设置
+
+设置按钮，iOS8之后API，用下面代码设置多个按钮
+
+```Objective-C
+- (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	void(^rowActionHandler)(UITableViewRowAction *, NSIndexPath *) = ^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+        NSLog(@"%@  index = %ld", action.title, indexPath.row);
+        [tableView setEditing:NO animated:YES];
+    };
+    UITableViewRowAction *action1 = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"编辑" handler:rowActionHandler];
+    UITableViewRowAction *action2 = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"删除" handler:rowActionHandler];
+    UITableViewRowAction *action3 = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"喜欢" handler:rowActionHandler];
+    action1.backgroundColor = [UIColor lightGrayColor];
+    action2.backgroundColor = [UIColor blackColor];
+    action3.backgroundColor = [UIColor redColor];
+    return @[action3,action1,action2];
+}
+```
+这种方式显示的样式是系统自带的，系统指定字体和文字颜色。
+
+按钮可以修改文字颜色，添加标题图片，背景图片等。`UITableViewRowAction`的显示为`UIButton`，修改`UIButton`的显示样式，cell的多个编辑按钮都会变化
+
+```Objective-C
+[[UIButton appearance] setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+[[UIButton appearance] setImage:[UIImage imageNamed:@"searchtool"] forState:UIControlStateNormal];
+[[UIButton appearance] setBackgroundImage:[UIImage imageNamed:@"searchtool"] forState:UIControlStateNormal];
+```
+
+值得注意的是下面这种方式设置字号无效
+
+```Objective-C
+[UIButton appearance].titleLabel.font = XDFont(10);
+```
+
+只有一个按钮的话可以使用`NSAttributedString`设置显示文字的字体、字号、颜色等
+
+```Objective-C
+NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:10], NSForegroundColorAttributeName:[UIColor redColor]};
+NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:@"编辑" attributes: attributes];
+[[UIButton appearance] setAttributedTitle:attributedTitle forState:UIControlStateNormal];
+```
+
+*这种实现方式并不好有诸多问题，当有多个按钮分别设置不同的字体字号颜色时，这种方式无法实现，当找到有效方法再添加....此条权当问题记录*
 
 # pdf的展示
 
