@@ -235,3 +235,81 @@ list(map(lambda x: x + x, [10,22,4,21]))
 
 但是，*Python对匿名函数支持有限，只有一些简单情况下可以用匿名参数*
 
+# 装饰器
+
+不更改函数的情况下，动态增加函数功能的方式，称为`装饰器(Decoratot)`
+
+函数的`__name__`属性可以获得函数名
+
+```Python
+>>> test()
+helloworld
+>>> a = test
+>>> a()
+helloworld
+>>> a.__name__
+'test'
+>>> 
+```
+
+装饰器是一个返回函数的高阶函数。
+
+自定义函数，打印hello world：
+
+```Python
+def test():
+	print ('hello world')
+```
+如何在不改动该函数的前提下，打印出调用该函数的函数名？这就使用到了`装饰器`
+
+```Python
+def inputTest(func):
+	def inputFunc(*args, **kw):
+		print('调用函数 %s():' % func.__name__)
+		return func(*args, **kw)
+	return inputFunc
+```
+上面代码就是一个打印日志的装饰器，`inputTest`函数，传入了一个函数`func`，返回了函数`inputFunc`。函数内自定义的函数`inputFunc`实现了打印传入函数`func`的函数名，并执行传入函数。
+
+如何将这个装饰器作用于`test`函数？使用Python的`@`语法。
+
+```Python
+@inputTest
+def test():
+	print ('hello world')
+```
+将`@inputTest`放到`test()`函数定义上面，相当于执行了`test = inputTest(test)`
+
+执行结果：
+
+```Python
+>>> test()
+调用函数 test():
+hello world
+>>> 
+```
+
+装饰器本身如果需要加入参数，就需要编写一个返回装饰器的高阶函数。例如打印log需要自定义文本+函数名
+
+```Python
+def log(text):
+	def inputTest(func):
+		def inputFunc(*args, **kw):
+			print('%s %s():' % (text, func.__name__))
+			return func(*args, **kw)
+		return inputFunc
+	return inputTest
+
+@log('你好')
+def test():
+	print ('hello world')
+```
+执行结果：
+
+```Python
+>>> test()
+你好 test():
+hello world
+>>> 
+```
+
