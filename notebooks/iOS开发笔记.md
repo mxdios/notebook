@@ -162,6 +162,22 @@ NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString
 
 *这种实现方式并不好有诸多问题，当有多个按钮分别设置不同的字体字号颜色时，这种方式无法实现，当找到有效方法再添加....此条权当问题记录*
 
+# 用Application Loader交付应用程序时，一直正在通过AppStore进行鉴定
+
+需要修改Application Loader里的一个文件内容。
+
+路径为
+
+```
+/Applications/Xcode.app显示包内容 -> Contents/Applications/Application Loader.app显示包内容 -> Contents/itms/java/lib/net.properties  
+```
+或者路径为
+
+```
+/Applications/Xcode.app显示包内容 -> Contents/Applications/Application Loader.app显示包内容 -> Contents/MacOS/itms/java/lib/net.properties 
+```
+打开这个文件，把第34行的http.proxyPort=443 改为https.proxyPort=80  再提交应用就ok了
+
 # pdf的展示
 
 项目里要求读取从服务器下载下来的pdf，pdf文件是一个发票文件，下载到本地Documents目录下，展示出来。问题来了，发票上的印章不见了。
@@ -267,3 +283,5 @@ NSData *data = [NSData dataWithContentsOfFile:_filePath];
 [Mupdf github地址](https://github.com/muennich/mupdf)
 
 [使用方法](http://www.jianshu.com/p/5fd00530d4bb)
+
+
