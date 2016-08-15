@@ -285,3 +285,38 @@ NSData *data = [NSData dataWithContentsOfFile:_filePath];
 [使用方法](http://www.jianshu.com/p/5fd00530d4bb)
 
 
+# 处理git库不允许上传大于100M的文件
+
+git库在上传大于50M的文件时会有警告，文件大于100M时直接拒绝push。要将这个文件从本地库和远程库中移除掉，再进行push操作。比如百度地图的导航静态库`libbaiduNaviSDK.a`就有100多M，做push操作时，直接报错了。
+
+> remote: warning: Large files detected.
+> remote: error: File gasstation/gasstation/Classes/Main/Lib/BaiduNaviSDK/libbaiduNaviSDK.a is 108.63 MB; this exceeds Git@OSC's file size limit of 100 MB
+> remote: error: hook declined to update refs/heads/master
+
+如果这个文件是最近一次commit的，并没有进行push操作，换句话说进行push操作的时候报错了。那么需要删除掉本地库中这个文件的commit记录再进行push
+
+在终端中cd进项目目录，就是项目的`.git`文件的目录下
+
+```
+cd /Users/XXX(cd后面路径换成自己项目的路径)
+```
+
+输入如下命令
+
+```
+git rm --cached /Users/XXX/XXX/libbaiduNaviSDK.a (大文件的路径)
+git commit --amend -CHEAD
+```
+
+到这一步这个大文件从commit记录中移除了，以后的commit也不会再commit它了。此时进行push即可
+
+还有一种情况是你无数次commit了，也不知道哪次把这个大文件commit上了，在进行push的时候报错了。
+
+这时需要将本地代码库回滚，回滚到某个commit之前
+
+```
+git reset --hard commit-id :回滚到commit-id，讲commit-id之后提交的commit都去除
+
+git reset --hard HEAD~3：将最近3次的提交回滚
+```
+
