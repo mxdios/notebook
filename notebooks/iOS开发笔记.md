@@ -289,8 +289,8 @@ NSData *data = [NSData dataWithContentsOfFile:_filePath];
 
 git库在上传大于50M的文件时会有警告，文件大于100M时直接拒绝push。要将这个文件从本地库和远程库中移除掉，再进行push操作。比如百度地图的导航静态库`libbaiduNaviSDK.a`就有100多M，做push操作时，直接报错了。
 
-> remote: warning: Large files detected.
-> remote: error: File gasstation/gasstation/Classes/Main/Lib/BaiduNaviSDK/libbaiduNaviSDK.a is 108.63 MB; this exceeds Git@OSC's file size limit of 100 MB
+> remote: warning: Large files detected.  
+> remote: error: File gasstation/gasstation/Classes/Main/Lib/BaiduNaviSDK/libbaiduNaviSDK.a is 108.63 MB; this exceeds Git@OSC's file size limit of 100 MB  
 > remote: error: hook declined to update refs/heads/master
 
 如果这个文件是最近一次commit的，并没有进行push操作，换句话说进行push操作的时候报错了。那么需要删除掉本地库中这个文件的commit记录再进行push
