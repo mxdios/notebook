@@ -12,6 +12,8 @@
 
 [Core Animation](https://github.com/mxdios/notebook/blob/master/notebooks/core_animation.md)
 
+[提交应用到AppStore的准备工作](https://github.com/mxdios/notebook/blob/master/notebooks/%E6%8F%90%E4%BA%A4%E5%BA%94%E7%94%A8%E5%88%B0AppStore%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C.md)
+
 
 ## Python学习
 
@@ -42,3 +44,5 @@
 [mac终端命令](https://github.com/mxdios/notebook/blob/master/notebooks/mac%E7%BB%88%E7%AB%AF%E5%91%BD%E4%BB%A4.md)
 
 [一些问题](https://github.com/mxdios/notebook/blob/master/notebooks/%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98.md)
+
+
