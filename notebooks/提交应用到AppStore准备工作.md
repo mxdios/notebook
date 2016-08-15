@@ -2,7 +2,8 @@
 
 ## App信息
 
-![img](http://oalg33nuc.bkt.clouddn.com/image/QQ20160815-7.png)
+![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160815-7.png?raw=true)
+
 
 ### app名称
 
@@ -50,7 +51,7 @@
 
 现在只需要提交5.5英寸的图片，其他尺寸会沿用5.5的图片。尺寸为1242*2208，可以设计几张app介绍图或者用手机截屏。
 
-![img](http://oalg33nuc.bkt.clouddn.com/image/QQ20160815-4.png)
+![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160815-4.png?raw=true)
 
 ### 描述/关键字/技术支持网址/营销网址
 
@@ -62,7 +63,7 @@
 
 营销网址：您的 App 营销信息网址(URL)。该网址(URL)会在 App Store 中显示。可不填写。
 
-![img](http://oalg33nuc.bkt.clouddn.com/image/QQ20160815-5.png)
+![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160815-5.png?raw=true)
 
 ## 构建版本
 
@@ -86,7 +87,7 @@
 
 您可以为您的 App 在韩国 App Store 中提供额外信息，这一额外信息只会显示在韩国 App Store 中。
 
-![img](http://oalg33nuc.bkt.clouddn.com/image/QQ20160815-9.png)
+![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160815-9.png?raw=true)
 
 ### 分级
 
@@ -94,7 +95,7 @@
 
 [了解详情](https://itunesconnect.apple.com/itc/views/shared/app_store_rating_matrix.html)
 
-![img](http://oalg33nuc.bkt.clouddn.com/image/QQ20160815-10.png)
+![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160815-10.png?raw=true)
 
 ## APP审核信息
 
@@ -106,5 +107,5 @@
 
 版本发布:这个根据实际情况设置，随便设置，为了一切尽在掌控，我会选择手动发布此版本，你应该体会一下应用审核通过点击发布按钮那一刻的感觉！（千万别点击开发者撤下提交的版本...）
 
-![img](http://oalg33nuc.bkt.clouddn.com/image/QQ20160815-3.png)
+![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160815-3.png?raw=true)
 
