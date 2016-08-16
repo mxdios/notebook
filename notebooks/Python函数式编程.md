@@ -313,3 +313,61 @@ hello world
 >>> 
 ```
 
+# 偏函数
+
+Python的`functools`模块提供了很多功能，其中一种就是偏函数(Partial function)。
+
+之前说的函数的[默认参数](https://github.com/mxdios/notebook/blob/master/notebooks/Python%E5%87%BD%E6%95%B0.md#%E9%BB%98%E8%AE%A4%E5%8F%82%E6%95%B0)，指定某一函数的默认值，降低函数调用难度。偏函数也可以做到
+
+函数`int()`可以吧字符串转换为整数，默认按照十进制转换。该函数还有一个额外参数`base`，可以指定按照某进制转换。注：`int('2323232', base = 8)`是指字符串是八进制数据字符串，转为十进制整数
+
+```Python
+>>> int('2323232') # 十进制转换十进制
+2323232
+>>> int('2323232', base = 8) # 八进制转换十进制
+632474
+>>> int('2323232', base = 16) # 十六进制转换十进制
+36844082
+>>> 
+```
+
+需要大量转换二进制字符串时，每次传入`int(x, base = 2)`太麻烦，自定义函数`int2()`，转换二进制字符串
+
+```Python
+>>> def int2(x, base = 2):
+...     return int(x, base)
+... 
+>>> int2('1001001') # 不传base默认按照二进制转换
+73
+>>> int2('1001001', base = 8)
+262657
+>>> int2('100110', base = 10)
+100110
+>>> 
+```
+
+上述是基本做法，可以创建偏函数实现上述需求，不需要自定义函数。
+
+```Python
+>>> import functools
+>>> int2 = functools.partial(int, base = 2)
+>>> int2('100111')
+39
+>>> int2('1001', base = 10)
+1001
+>>> 
+```
+`functools.partial`是将函数的某个参数给定一个默认值，返回新的函数。`int2 = functools.partial(int, base = 2)`就是指定`int()`函数中`base`参数的默认值是`2`并返回新的函数。
+
+创建偏函数时，实际上可以接收函数对象、`*args` 和 `**kw` 三个参数。
+
+```Python
+>>> max2 = functools.partial(max, 10)
+>>> max2(3,9)  # 相当于 max(10, 3, 9)
+10
+>>> 
+```
+
+当函数参数太多时，需要简化，可以使用`functools.partial`创建一个偏函数。可以固定原函数的部分参数，调用起来更简单。
+
+
