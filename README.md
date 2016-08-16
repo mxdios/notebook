@@ -27,6 +27,8 @@
 
 [Python函数式编程](https://github.com/mxdios/notebook/blob/master/notebooks/Python%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B.md)
 
+[Python模块](https://github.com/mxdios/notebook/blob/master/notebooks/Python%E6%A8%A1%E5%9D%97.md)
+
 ## Swift学习
 
 [Swift基础](https://github.com/mxdios/notebook/blob/master/notebooks/Swift%E5%9F%BA%E7%A1%80.md)

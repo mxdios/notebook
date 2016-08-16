@@ -6,6 +6,16 @@
 
 避免模块名冲突，引入目录来组织模块，称为包(Package)。
 
+![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160816-0.png?raw=true)
+
+引入包，顶层包名不冲突，那么里面所有的模块都不会冲突。例如`hello.py`模块，引入包`PythonTest`中，模块名就变成了`PythonTest.hello`。
+
+注意：每个包目录下面都有一个`__init__.py`文件，这个文件必须存在，不然这就是个普通目录，而不是一个包。`__init__.py`是空文件也可以写代码，他的模块名是`PythonTest`。
+
+注意：创建模块命名时，不能与自带模块名称冲突。例如系统自带`sys`模块，自己的模块不能命名为`sys.py`，否则将无法导入系统自带`sys`模块。
+
+如果有多层级的包结构，就一路`.`下去。
+
 
 
 
