@@ -183,6 +183,33 @@ hello aaaa
 
 只是不建议这么做。
 
+## 安装第三方模块
+
+安装第三方模块，需要通过包管理工具`pip`完成。Mac或Linux不需要手动安装`pip`，Mac或Linux上可能并存Python3.x和Python2.x版本，对应的pip命令是`pip3`
+
+安装第三方库`Python Imaging Library`，这是Python下的图像处理工具库，目前`PIL`只支持到Python2.7，并且很久没更新。基于PIL的Pillow项目非常活跃，支持Python3.
+
+安装Pillow
+
+```Python
+pip3 install Pillow
+```
+
+安装完成后，使用Pillow生成图片缩略图
+
+```Python
+>>> from PIL import Image
+>>> im = Image.open('img.png')
+>>> print(im.format, im.size, im.mode)
+PNG (1920, 2172) RGBA
+>>> im.thumbnail((100,200))
+>>> im.save('newimg.jpg', 'JPEG')
+>>> 
+```
+
+其他常用的第三方库还有MySQL的驱动：`mysql-connector-python`，用于科学计算的NumPy库：`numpy`，用于生成文本的模板工具`Jinja2`，等等。
+
+
 
 
 
