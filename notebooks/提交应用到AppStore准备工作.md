@@ -132,6 +132,14 @@
 
 7. **64位/https/bitcode：**应用必须支持64位包括应用中使用的静态库，如果不支持64位，交付应用程序就会失败，根本到不了审核。https安全网络请求，目前为止并没有强制这样做，不保证以后会不会强制。比如现在app必须包含`IPv6-only`网络支持。bitcode Watch应用必须支持，iOS应用可支持可不支持，Mac应用不支持。
 
+8. **后台地理定位：**使用后台地理定位Background Modes为打开状态，需要在`info.plist`的`NSLocationAlwaysUsageDescription`字段添加文字描述，说清楚后台地理定位用在什么地方了。
+>Please revise the NSLocationAlwaysUsageDescription value in the info.plist to specify the intended purpose of using the user's location while the app is in the background.
+
+	还有一个很重要的地方，就是必须在提交app到AppStore时填写的描述里添加电池使用免责声明，提示用户后台定位操作会消耗电量并且影响电池续航能力。这个规则略坑啊
+	
+	>Please also add the following battery use disclaimer in your Application Description:
+"Continued use of GPS running in the background can dramatically decrease battery life."
+
 
 
 
