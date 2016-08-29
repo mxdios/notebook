@@ -1,4 +1,4 @@
-步骤：
+# 基本步骤：
 
 1. 去一个新的目录，存放git项目
 
@@ -20,7 +20,7 @@
 
 9. push到远程库  `git push origin dev`
 
-多分支使用
+# 多分支使用
 
 1. 现在处在一个普通分支`0-testBarch`，做完修改操作，进行commit push操作
 
@@ -49,4 +49,16 @@
 	2. `git branch -D 1-new-barnch` 删除本地分支
 
 	3. `get merge dev`  merge dev分支的最新代码到本地,如果有冲突可以看到提示。
+
+	4. 查看冲突
+
+		1. `git checkout dev`原本在某分支`36-wechat-html5-uiStyle`，切换到dev主要分支
+
+		2. `git pull`拉下代码
+
+		3. `git checkout 36-wechat-html5-uiStyle`切换回原来分支
+
+		4. `git merge devel`merge操作，如果有冲突会提醒
+
+		5. `git status`显示当前git状态，有冲突会显示冲突提醒
 
