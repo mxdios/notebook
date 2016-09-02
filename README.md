@@ -15,7 +15,7 @@
 [提交应用到AppStore的准备工作](https://github.com/mxdios/notebook/blob/master/notebooks/%E6%8F%90%E4%BA%A4%E5%BA%94%E7%94%A8%E5%88%B0AppStore%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C.md)
 
 
-## Python学习
+## Python
 
 原文出处[廖雪峰的官方网站Python教程](http://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000)，本文只是我的学习记录，感谢廖老师提供优秀的Python学习资料。
 
@@ -29,17 +29,17 @@
 
 [Python模块](https://github.com/mxdios/notebook/blob/master/notebooks/Python%E6%A8%A1%E5%9D%97.md)
 
-## Swift学习
+## Swift
 
 [Swift基础](https://github.com/mxdios/notebook/blob/master/notebooks/Swift%E5%9F%BA%E7%A1%80.md)
 
-## React Native学习
+## React Native
 
 [React Native准备工作](https://github.com/mxdios/notebook/blob/master/notebooks/ReactNative%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C.md)
 
 [React Native第一个项目](https://github.com/mxdios/notebook/blob/master/notebooks/ReactNative%E7%AC%AC%E4%B8%80%E4%B8%AA%E9%A1%B9%E7%9B%AE.md)
 
-## H5学习
+## H5
 
 [微信内置H5项目](https://github.com/mxdios/notebook/blob/master/notebooks/%E5%BE%AE%E4%BF%A1%E5%86%85%E7%BD%AEH5%E9%A1%B9%E7%9B%AE.md)
 
