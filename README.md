@@ -14,6 +14,7 @@
 
 [提交应用到AppStore的准备工作](https://github.com/mxdios/notebook/blob/master/notebooks/%E6%8F%90%E4%BA%A4%E5%BA%94%E7%94%A8%E5%88%B0AppStore%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C.md)
 
+[iOS制作库文件](https://github.com/mxdios/libXDAttributedTool)
 
 ## Python
 
