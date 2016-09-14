@@ -32,6 +32,21 @@ Password：`输入开机密码`
 
 生效后空行快捷键，只在代码行能产生/解除注释，空行不能产生注释。记得之前可以来这....
 
+## Xcode控制台输出问题
+
+升级Xcode8.0之后运行项目，控制台疯狂打印了N多东西，完全看不懂啊，完犊子了，这么多需要适配的...
+
+眼不见心不烦，下面就提供去掉这些乱七八糟打印内容的方法。
+
+**解决办法：**
+
+在`Edit Scheme...`下的Run -> Arguments -> Environment Variables 添加  `OS_ACTIVITY_MODE` = `disable`
+
+具体见下图
+
+![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160914-3.png?raw=true)
+
+
 
 
 
