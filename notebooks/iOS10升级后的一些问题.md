@@ -46,9 +46,20 @@ Password：`输入开机密码`
 
 ![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160914-3.png?raw=true)
 
+#  类型判断
 
+网络获取数据，做容错处理，判断某个字段是否符合需要的数据类型。之前一度用如下判断方法：
 
+```Objective-c
+[NSStringFromClass([userDict[@"plates"] class]) isEqualToString:@"__NSCFArray"]
+```
+如果`userDict[@"plates"]`的数据类型是数组的话，打印出来的就是`__NSCFArray`类型。同样如果是字典类型的话，打印出来的就是`__NSCFDictionary`。但是iOS10之后，打印出来的不同了，同样的数组类型，打印出来的是`__NSSingleObjectArrayI`。
 
+之前的这种判断方法很欠考虑，还是利用下面的方法比较靠谱：
+
+```Objective-c
+[userDict[@"plates"] isKindOfClass:[NSArray class]]
+```
 
 
 
