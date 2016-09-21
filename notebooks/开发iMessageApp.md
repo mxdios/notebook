@@ -28,7 +28,7 @@ Xcode提供了`Sticker Pack Application`，这是一个创建表情包的模板�
 
 ![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160921-2.png?raw=true)
 
-在Xcode的右边，Sticker Pack设置尺寸的地方，这里的三个尺寸，在程序运行的时候，表情分别以不同的方式排布。
+在Xcode的右边，Sticker Pack设置尺寸的地方，这里的三个尺寸是表情的默认大小，在程序运行的时候，表情分别以不同的方式排布。
 
 ![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160921-7.png?raw=true)
 
@@ -56,5 +56,9 @@ Xcode提供了`Sticker Pack Application`，这是一个创建表情包的模板�
 4. 图片格式必须是 PNG, APNG, JPEG, GIF ;
 ```
 太大的图片可以放到Sticker Pack包里，也能启动运行到程序里，只是无法点击发布，可以找个大图试一下。
+
+用`Sticker Pack Application`可以快递创建一个用于iMessage的表情包，不需要写任何代码。
+
+# 开发一款真正的iMessage Application
 
 
