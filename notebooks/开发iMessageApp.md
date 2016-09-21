@@ -26,7 +26,7 @@ Xcode提供了`Sticker Pack Application`，这是一个创建表情包的模板�
 
 找一些图片，直接拖动到Sticker Pack里面，我直接拖动的发过来的qq表情。
 
-![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160921-1.png?raw=true)
+![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160921-2.png?raw=true)
 
 在Xcode的右边，Sticker Pack设置尺寸的地方，这里的三个尺寸，在程序运行的时候，表情分别以不同的方式排布。
 
