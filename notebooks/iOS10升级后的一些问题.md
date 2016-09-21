@@ -61,5 +61,25 @@ Password：`输入开机密码`
 [userDict[@"plates"] isKindOfClass:[NSArray class]]
 ```
 
+# URL Schemes跳转系统设置
 
+跳转系统设置的方法彻底被关闭了，也就是说你已不能从app跳转到系统设置里了。我的某个app使用地理定位，运行app时会检测是否开启地理定位，如果未开启，提醒alert，用如下代码点击跳转到地理定位的开启设置里。
+
+```Objective-c
+NSURL *url = [NSURL URLWithString:@"prefs:root=LOCATION_SERVICES"];
+if ([[UIApplication sharedApplication] canOpenURL:url]) {
+  [[UIApplication sharedApplication] openURL:url];
+}
+```
+iOS10以后`prefs:root`开头的Scheme无法跳转到系统设置里了。
+
+# plist里声明获取隐私数据权限
+
+访问隐私数据需要在plist里声明，在iOS10之前只需要声明地理定位之类的敏感隐私数据，获取照片、相机等不需要再plist里声明。iOS10之后，这些也必须声明，不声明会crash。需要声明的用户数据有：
+
+> Contacts（联系人）, Calendar（日历）, Reminders（提醒事件）, Photos（照片）, Bluetooth Sharing（蓝牙共享）, Microphone（麦克风）, Camera（相机）, Location（位置）, Health（健康）, HomeKit（家居）, Media Library（媒体库）, Motion（运动）, CallKit（打电话）, Speech Recognition（语言识别）, SiriKit（Siri）, TV Provider（电视提供商）.
+
+![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160921-0.png?raw=true)
+
+后面string字段填写弹出用户允许时展示的描述信息。**注意，这里必须要写明获取该权限的用途，不然会被AppStore拒绝上架的。**
 
