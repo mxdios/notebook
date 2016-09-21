@@ -68,7 +68,7 @@ Xcode提供了`Sticker Pack Application`，这是一个创建表情包的模板�
 
 ![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160921-5.png?raw=true)
 
-将帧动画的每一帧图片拖动到`Frame1`、`Frame2`....`FrameN`中。添加完毕之后，commit + R运行程序即可
+将帧动画的每一帧图片拖动到`Frame1`、`Frame2`....`FrameN`中。添加完毕之后，command + R运行程序即可
 
 |添加帧图片|运行结果 帧动画/GIF|
 |:---:|:---:|
@@ -77,5 +77,20 @@ Xcode提供了`Sticker Pack Application`，这是一个创建表情包的模板�
 用`Sticker Pack Application`可以快速创建一个用于iMessage的表情包，不需要写任何代码。
 
 # 开发一款真正的iMessage Application
+
+这次创建项目要选择iMessage Application
+
+![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160921-9.png?raw=true)
+
+创建完项目之后会有一个`MessagesExtension`，这是最重要的文件夹，里面的存放着开发iMessage application的代码、storyboard、图片集合和一些配置信息。
+
+command + R运行程序，会在message里看到在storyboard里默认的`Hello World`。
+
+|MessagesExtension|运行结果|
+|:---:|:---:|
+|![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160921-10.png?raw=true)|![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160921-11.png?raw=true)|
+
+
+
 
 
