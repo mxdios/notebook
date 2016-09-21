@@ -16,6 +16,8 @@ iMessage App存在于iOS的AppStore中，但是iMessage app有一个独立完整
 
 # 做一款短信斗图的iMessage App
 
+## 普通表情包
+
 Xcode提供了`Sticker Pack Application`，这是一个创建表情包的模板，没有任何代码。
 
 在Xcode中创建一个新的工程，选择iOS -> Application -> Sticker Pack Application
@@ -38,7 +40,6 @@ Xcode提供了`Sticker Pack Application`，这是一个创建表情包的模板�
 |:---:|:---:|:---:|
 |![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160921-3.png?raw=true)|![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160921-4.png?raw=true)|![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160921-6.png?raw=true)|
 
-
 表情的三个尺寸`Small`、`Medium`、`Large`。apple对这三种尺寸并没有严格限制，只有一些建议的大小：
 
 ```
@@ -57,7 +58,23 @@ Xcode提供了`Sticker Pack Application`，这是一个创建表情包的模板�
 ```
 太大的图片可以放到Sticker Pack包里，也能启动运行到程序里，只是无法点击发布，可以找个大图试一下。
 
-用`Sticker Pack Application`可以快递创建一个用于iMessage的表情包，不需要写任何代码。
+## 动图表情包
+
+图标格式支持GIF，创建动态表情包可以直接拖GIF图标。
+
+另一种创建动态表情的方式是使用`Sticker Sequence`，序列存储帧动画的每一帧，组成一组动画。
+
+在Sticker Pack空白处右键，Add Assets -> New Sticker Sequence
+
+![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160921-5.png?raw=true)
+
+将帧动画的每一帧图片拖动到`Frame1`、`Frame2`....`FrameN`中。添加完毕之后，commit + R运行程序即可
+
+|添加帧图片|运行结果 帧动画/GIF|
+|:---:|:---:|
+|![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160921-8.png?raw=true)|![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160921-9.gif?raw=true)|
+
+用`Sticker Pack Application`可以快速创建一个用于iMessage的表情包，不需要写任何代码。
 
 # 开发一款真正的iMessage Application
 
