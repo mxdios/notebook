@@ -67,5 +67,89 @@ oc中习惯称函数为方法，`-`开头的为实例方法，`+`开头的为类
 ```
 当然程序最终结果还是崩溃了，但是可以看到程序进入了`+ (BOOL)resolveInstanceMethod:(SEL)sel`方法，并且打印出来的`sel`就是我们要调用的`test`。
 
+避免程序崩溃，可以在这个方法中做相应处理，导入`#import <objc/runtime.h>`，改写如下代码：
+
+```Objective-c
++ (BOOL)resolveInstanceMethod:(SEL)sel {
+    if (sel == @selector(test)) {
+        class_addMethod([self class], sel, (IMP)testIMP, "v@:");
+        return YES;
+    }
+    return [super resolveInstanceMethod:sel];
+}
+void testIMP(id self, SEL _cmd) {
+    NSLog(@"打印test");
+}
+```
+
+控制台会输出`2016-09-22 15:44:21.231 runtimeTest[9840:314576] 打印test`，程序不会崩溃了。
+
+这里用到了一个`class_addMethod`方法，
+
+```Objective-c
+OBJC_EXPORT BOOL class_addMethod(Class cls, SEL name, IMP imp, const char *types) 
+```
+
+- `Class cls`在当前类中添加方法，是不是类似`target`?
+
+- `SEL name`方法中的sel
+
+- `IMP imp`自定义的方法
+
+- `*types`定义自定义方法的参数类型和返回值的字符串，`v@:`中的`v`指的是`void`，`@`指参数，`:` 指方法`SEL _cmd`。比如自定义函数：
+
+	```Objective-c
+	int newTest(id self, SEL _cmd, NSString *str) {
+  		 return 100;
+	}
+	```
+	添加的函数方法应该是：
+	
+	```Objective-c
+	ass_addMethod([self class], @selector(newTest), (IMP)newMethod, "i@:@");
+	```
+
+## - (id)forwardingTargetForSelector:(SEL)aSelector
+
+当我们在A控制器中调用B控制器里的方法时，需要将B控制器的方法暴露在.h头文件中，并在A控制器`#import`B控制器头文件，才能调用。当不做这些工作时，调用方法程序就会崩溃。
+
+可以在`- (id)forwardingTargetForSelector:(SEL)aSelector`方法中实现不暴露方法，不引入头文件，也能调用其他控制器里的方法。
+
+如果`+ (BOOL)resolveInstanceMethod:(SEL)sel`方法中没有找到执行方法，消息会继续传递到`- (id)forwardingTargetForSelector:(SEL)aSelector`方法中。
+
+创建一个`testViewController`控制器，在控制器里实现`test2`方法:
+
+```Objective-c
+- (void)test2 {
+    NSLog(@"hello world !!!!!!");
+}
+```
+在`ViewController`控制器里实现下面方法：
+
+```Objective-c
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self performSelector:@selector(test2)];
+}
+- (id)forwardingTargetForSelector:(SEL)aSelector {
+    Class class = NSClassFromString(@"testViewController");
+    UIViewController *vc = class.new;
+    if (aSelector == NSSelectorFromString(@"test2")) {
+        NSLog(@"hello");
+        return vc;
+    }
+    return nil;
+}
+```
+执行结果：
+
+```
+2016-09-22 16:31:35.581 runtimeTest[10033:358140] hello
+2016-09-22 16:31:35.581 runtimeTest[10033:358140] hello world !!!!!!
+```
+
+程序并没有崩溃，当消息传递到`- (id)forwardingTargetForSelector:(SEL)aSelector`这个方法中时，创建一个`testViewController`对象，并将调用`test2`的消息传递给`testViewController`对象，让`testViewController`去实现`test2`方法，恰好`testViewController`中存在`test2`方法。不知这算不算多继承。
+
+参考资料HenryCheng的简书文章[runtime那些事（消息机制）](http://www.jianshu.com/p/f6300eb3ec3d)
 
 
