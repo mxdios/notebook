@@ -34,6 +34,8 @@ Password：`输入开机密码`
 
 # Xcode控制台输出问题
 
+## 无用log打印
+
 升级Xcode8.0之后运行项目，控制台疯狂打印了N多东西，完全看不懂啊，完犊子了，这么多需要适配的...
 
 眼不见心不烦，下面就提供去掉这些乱七八糟打印内容的方法。
@@ -45,6 +47,32 @@ Password：`输入开机密码`
 具体见下图
 
 ![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160914-3.png?raw=true)
+
+## 真机测试log屏蔽
+
+经过上述修改，在iOS10模拟器中无用的log输出被屏蔽了，但是真机测试的时候，没有log输出，log日志被完全屏蔽了。不知是屏蔽无用log的设置，还是xcode8为了提高真机测试性能屏蔽了log日志？真机测试的log也很重要。
+
+为了app正式发布时不打印log，让打印操作`NSLog`只在`Debug`环境下运行，采用了下面的办法自定义`NSLog`:
+
+```Objective-c
+#ifdef DEBUG
+#define XDLog(...) NSLog(__VA_ARGS__)
+#else
+#define XDLog(...)
+#endif
+```
+iOS10之后，在真机中`NSLog`无法打印log，可以使用`printf()`，具体修改见下面自定义log：
+
+```Objective-c
+#ifdef DEBUG
+#define XDString [NSString stringWithFormat:@"%s", __FILE__].lastPathComponent
+#define XDLog(...) printf("%s %d行: %s\n\n",[XDString UTF8String], __LINE__, [[NSString stringWithFormat:__VA_ARGS__] UTF8String]);
+#else
+#define XDLog(...)
+#endif
+```
+`XDString`是获取的该log在哪个文件里，`__LINE__`该log在第几行。`printf()`是c语言方法，所以要用`UTF8String`转义，不然每个log都会有警告。
+
 
 #  类型判断
 
