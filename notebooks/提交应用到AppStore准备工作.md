@@ -4,6 +4,15 @@
 
 ![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160815-7.png?raw=true)
 
+### 公司名称
+
+![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/WechatIMG1081.jpeg?raw=true)
+
+公司名字是指显示在这里的名字。这个只针对公司级账号说的，个人账号不能设置公司名称，只能以开发商名字显示。
+
+![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160930-0.png?raw=true)
+
+每个账号在iTunes Connect里创建第一个应用的时候，可以设置公司名字，如果不设置的话就显示开发商名字。日后不能修改公司名字，也不能重新设置。只能给苹果开发者发邮件，要求去掉公司名显示开发商名字。
 
 ### app名称
 

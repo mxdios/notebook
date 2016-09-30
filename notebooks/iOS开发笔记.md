@@ -328,12 +328,14 @@ Developer中的AppID对应项目中的Bundle id，是一个app的唯一标识，
 
 我经历过替换开发者账号的事。事情是这样的：开发某款app在上线AppStore当天，甲方觉得提供商名字不好(因为是个人开发者账号，显示的是人名拼音)要求下架，重新提供开发者账号提交。甲方是上帝，您高兴就好，反正$99不用我掏腰包。就这样上架第一天我亲手点了下架按钮，
 
-问题就来了，Bundle id被旧的开发者帐号占用了，新的没法用了，我不能为了换个开发者帐号把Bundle id改了吧，毕竟牵扯好几个第三方平台呢。那就把原来账号的Bundle id，删除的时候有如下提醒：
+问题就来了，Bundle id被旧的开发者帐号占用了，新的没法用了，我不想为了换个开发者帐号把Bundle id改了，毕竟牵扯好几个第三方平台呢。那就删除原来账号的Bundle id，删除的时候有如下提醒：
 
 ![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160928-0.png?raw=true)
 
-在App Store上使用了，不能删除。我只好去iTunes Connect里删除了app，问题依旧。开发者平台中的Bundle id在app构建版本之后，不能修改或删除的。若想删除只能求助苹果开发者平台的客服人员。
+在App Store上使用了，不能删除。我只好去iTunes Connect里删除了app（**注意：此为大坑**），问题依旧，只能求助苹果开发者平台的客服人员。
 
-打苹果开发者客服电话: 4006 701 855 [全球电话支持](https://developer.apple.com/contact/phone/cn/)，客服人员会要求开发者账号持有者确认删除Bundle id操作。
+打苹果开发者客服电话: 4006 701 855 [全球电话支持](https://developer.apple.com/contact/phone/cn/)。坑爹的是，苹果客服人员告诉我删除不了，开发者平台中的Bundle id在app构建版本之后，不能修改或删除的。即便是你用该Bundle id发布的应用下架删除了，该Bundle id也会随着该应用永沉大海。不能删！不能改！
+
+客服告诉我最佳的解决办法是迁移应用。将原账号的应用迁移到新账号上，应用所用到的Bundle id也会随之迁移过去。但是我把iTunes Connect里的应用删除了，那就没办法迁移了。摆在我面前的有两条路，第一：重新用旧账号打包提交审核通过，迁移应用到新账号，第二：改Bundle id。苹果客服人员对我如是说，客服诚不欺我啊！
 
 
