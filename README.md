@@ -22,6 +22,8 @@
 
 [runtime的消息传递](https://github.com/mxdios/notebook/blob/master/notebooks/runtime%E7%9A%84%E6%B6%88%E6%81%AF%E4%BC%A0%E9%80%92.md)
 
+[有窗口小部件widget的项目开发](https://github.com/mxdios/XDWorkTime)
+
 ## Python
 
 原文出处[廖雪峰的官方网站Python教程](http://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000)，本文只是我的学习记录，感谢廖老师提供优秀的Python学习资料。
