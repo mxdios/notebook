@@ -97,20 +97,20 @@ iOS10之后，在真机中`NSLog`无法打印log，可以使用`printf()`，具�
 
 例如：我的某个app使用地理定位，运行app时会检测是否开启地理定位，如果未开启，提醒alert，用如下代码点击跳转到地理定位的开启设置里。
 
-iOS10之前使用下面方法可以跳转到系统设置列表，列表里有自己的app，可以点击进去做相应设置，使用时要添加URL Schemes，字段为`prefs`。
+iOS10之前使用下面方法可以跳转到系统设置列表，列表里有自己的app，可以点击进去做相应设置.使用时要添加URL Schemes，字段为`prefs`。
 
 ![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161010-0.png?raw=true)
 
 ```Objective-c
 NSURL *url = [NSURL URLWithString:@"prefs:root=LOCATION_SERVICES"];
 if ([[UIApplication sharedApplication] canOpenURL:url]) {
-  [[UIApplication sharedApplication] openURL:url];
+		[[UIApplication sharedApplication] openURL:url];
 }
 ```
 
-iOS10时该方法被关闭了，只能通过下面方法跳转到自己app的系统设置，使用`UIApplicationOpenSettingsURLString`，这个字段是在iOS8时出现的。在使用这个方法时，注意iOS8/iOS9时可以使用`[[UIApplication sharedApplication] openURL:url];`，iOS10建议使用`openURL:options:completionHandler:`
+iOS10时该方法被关闭了，只能通过下面方法跳转到自己app的系统设置，使用`UIApplicationOpenSettingsURLString`，这个字段是在iOS8时出现的。在使用这个方法时，注意iOS8/iOS9时可以使用`openURL:`，iOS10建议使用`openURL:options:completionHandler:`
 
-```
+```Objective-c
 NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
 if ([[UIApplication sharedApplication] canOpenURL:url]) {
     if (iOS10) {
@@ -131,46 +131,46 @@ if ([[UIApplication sharedApplication] canOpenURL:url]) {
 
 ### 附prefs:root
 
-prefs:root=General&path=About
-prefs:root=General&path=ACCESSIBILITY
-prefs:root=AIRPLANE_MODE
-prefs:root=General&path=AUTOLOCK
-prefs:root=General&path=USAGE/CELLULAR_USAGE
-prefs:root=Brightness
-prefs:root=General&path=Bluetooth
-prefs:root=General&path=DATE_AND_TIME
-prefs:root=FACETIME
-prefs:root=General
-prefs:root=General&path=Keyboard
-prefs:root=CASTLE
-prefs:root=CASTLE&path=STORAGE_AND_BACKUP
-prefs:root=General&path=INTERNATIONAL
-prefs:root=LOCATION_SERVICES
-prefs:root=ACCOUNT_SETTINGS
-prefs:root=MUSIC
-prefs:root=MUSIC&path=EQ
-prefs:root=MUSIC&path=VolumeLimit
-prefs:root=General&path=Network
-prefs:root=NIKE_PLUS_IPOD
-prefs:root=NOTES
-prefs:root=NOTIFICATIONS_ID
-prefs:root=Phone
-prefs:root=Photos
-prefs:root=General&path=ManagedConfigurationList
-prefs:root=General&path=Reset
-prefs:root=Sounds&path=Ringtone
-prefs:root=Safari
-prefs:root=General&path=Assistant
-prefs:root=Sounds
-prefs:root=General&path=SOFTWARE_UPDATE_LINK
-prefs:root=STORE
-prefs:root=TWITTER
-prefs:root=General&path=USAGE
-prefs:root=VIDEO
-prefs:root=General&path=Network/VPN
-prefs:root=Wallpaper
-prefs:root=WIFI
-prefs:root=INTERNET_TETHERING
+prefs:root=General&path=About  
+prefs:root=General&path=ACCESSIBILITY  
+prefs:root=AIRPLANE_MODE  
+prefs:root=General&path=AUTOLOCK  
+prefs:root=General&path=USAGE/CELLULAR_USAGE  
+prefs:root=Brightness  
+prefs:root=General&path=Bluetooth  
+prefs:root=General&path=DATE_AND_TIME  
+prefs:root=FACETIME  
+prefs:root=General  
+prefs:root=General&path=Keyboard  
+prefs:root=CASTLE  
+prefs:root=CASTLE&path=STORAGE_AND_BACKUP  
+prefs:root=General&path=INTERNATIONAL  
+prefs:root=LOCATION_SERVICES  
+prefs:root=ACCOUNT_SETTINGS  
+prefs:root=MUSIC  
+prefs:root=MUSIC&path=EQ  
+prefs:root=MUSIC&path=VolumeLimit  
+prefs:root=General&path=Network  
+prefs:root=NIKE_PLUS_IPOD  
+prefs:root=NOTES  
+prefs:root=NOTIFICATIONS_ID  
+prefs:root=Phone  
+prefs:root=Photos  
+prefs:root=General&path=ManagedConfigurationList  
+prefs:root=General&path=Reset  
+prefs:root=Sounds&path=Ringtone  
+prefs:root=Safari  
+prefs:root=General&path=Assistant  
+prefs:root=Sounds  
+prefs:root=General&path=SOFTWARE_UPDATE_LINK  
+prefs:root=STORE  
+prefs:root=TWITTER  
+prefs:root=General&path=USAGE  
+prefs:root=VIDEO  
+prefs:root=General&path=Network/VPN  
+prefs:root=Wallpaper  
+prefs:root=WIFI  
+prefs:root=INTERNET_TETHERING  
 
 
 # plist里声明获取隐私数据权限
