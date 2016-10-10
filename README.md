@@ -24,6 +24,8 @@
 
 [有窗口小部件widget的项目开发](https://github.com/mxdios/XDWorkTime)
 
+[TestFlight测试应用程序](https://github.com/mxdios/notebook/blob/master/notebooks/TestFlight%E6%B5%8B%E8%AF%95%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F.md)
+
 ## Python
 
 原文出处[廖雪峰的官方网站Python教程](http://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000)，本文只是我的学习记录，感谢廖老师提供优秀的Python学习资料。
