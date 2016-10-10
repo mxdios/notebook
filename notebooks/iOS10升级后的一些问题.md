@@ -91,7 +91,15 @@ iOS10之后，在真机中`NSLog`无法打印log，可以使用`printf()`，具�
 
 # URL Schemes跳转系统设置
 
-跳转系统设置的方法彻底被关闭了，也就是说你已不能从app跳转到系统设置里了。我的某个app使用地理定位，运行app时会检测是否开启地理定位，如果未开启，提醒alert，用如下代码点击跳转到地理定位的开启设置里。
+跳转系统设置分为**跳转到系统设置列表**和**跳转到自己app的系统设置**。
+
+跳转系统设置列表的方法在iOS10被彻底关闭了，也就是说你已不能从app跳转到系统设置列表里了。但是还可以跳转到自己app的系统设置
+
+例如：我的某个app使用地理定位，运行app时会检测是否开启地理定位，如果未开启，提醒alert，用如下代码点击跳转到地理定位的开启设置里。
+
+iOS10之前使用下面方法可以跳转到系统设置列表，列表里有自己的app，可以点击进去做相应设置，使用时要添加URL Schemes，字段为`prefs`。
+
+![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161010-0.png?raw=true)
 
 ```Objective-c
 NSURL *url = [NSURL URLWithString:@"prefs:root=LOCATION_SERVICES"];
@@ -99,7 +107,71 @@ if ([[UIApplication sharedApplication] canOpenURL:url]) {
   [[UIApplication sharedApplication] openURL:url];
 }
 ```
-iOS10以后`prefs:root`开头的Scheme无法跳转到系统设置里了。
+
+iOS10时该方法被关闭了，只能通过下面方法跳转到自己app的系统设置，使用`UIApplicationOpenSettingsURLString`，这个字段是在iOS8时出现的。在使用这个方法时，注意iOS8/iOS9时可以使用`[[UIApplication sharedApplication] openURL:url];`，iOS10建议使用`openURL:options:completionHandler:`
+
+```
+NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+if ([[UIApplication sharedApplication] canOpenURL:url]) {
+    if (iOS10) {
+        [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
+            XDLog(@"success = %d", success);
+        }];
+    } else {
+        [[UIApplication sharedApplication] openURL:url];
+    }
+}
+```
+
+运行结果：
+
+|跳转到系统设置列表，iOS10之前可用|跳转到自己app的系统设置，iOS8以后可用|
+|:---:|:---:|
+|![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/2016年10月10日上午11.31.12.png?raw=true)|![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/2016年10月10日上午11.33.55.png?raw=true)|
+
+### 附prefs:root
+
+prefs:root=General&path=About
+prefs:root=General&path=ACCESSIBILITY
+prefs:root=AIRPLANE_MODE
+prefs:root=General&path=AUTOLOCK
+prefs:root=General&path=USAGE/CELLULAR_USAGE
+prefs:root=Brightness
+prefs:root=General&path=Bluetooth
+prefs:root=General&path=DATE_AND_TIME
+prefs:root=FACETIME
+prefs:root=General
+prefs:root=General&path=Keyboard
+prefs:root=CASTLE
+prefs:root=CASTLE&path=STORAGE_AND_BACKUP
+prefs:root=General&path=INTERNATIONAL
+prefs:root=LOCATION_SERVICES
+prefs:root=ACCOUNT_SETTINGS
+prefs:root=MUSIC
+prefs:root=MUSIC&path=EQ
+prefs:root=MUSIC&path=VolumeLimit
+prefs:root=General&path=Network
+prefs:root=NIKE_PLUS_IPOD
+prefs:root=NOTES
+prefs:root=NOTIFICATIONS_ID
+prefs:root=Phone
+prefs:root=Photos
+prefs:root=General&path=ManagedConfigurationList
+prefs:root=General&path=Reset
+prefs:root=Sounds&path=Ringtone
+prefs:root=Safari
+prefs:root=General&path=Assistant
+prefs:root=Sounds
+prefs:root=General&path=SOFTWARE_UPDATE_LINK
+prefs:root=STORE
+prefs:root=TWITTER
+prefs:root=General&path=USAGE
+prefs:root=VIDEO
+prefs:root=General&path=Network/VPN
+prefs:root=Wallpaper
+prefs:root=WIFI
+prefs:root=INTERNET_TETHERING
+
 
 # plist里声明获取隐私数据权限
 
@@ -113,6 +185,8 @@ iOS10以后`prefs:root`开头的Scheme无法跳转到系统设置里了。
 
 # 某些app链接网络失败
 
-iOS10之后出现了实用无线局域网与蜂窝移动网络的允许授权弹窗，有些应用没有出现这个弹窗，莫名其妙的就连不上网络了，去设置的“使用无线局域网与蜂窝移动的应用”里找也找不到，搜索该应用，也没有开启使用网络授权的开关。其实只需要在“使用无线局域网与蜂窝移动的应用”里面修改任意一个应用的使用网络设置，再打开连不上网的应用，就会出现网络授权弹窗。这是一个系统bug，希望后续的iOS10.x.x系统会修复。
+iOS10之后出现了实用无线局域网与蜂窝移动网络的允许授权弹窗，有些应用没有出现这个弹窗，莫名其妙的就连不上网络了，去设置的“使用无线局域网与蜂窝移动的应用”里找也找不到，搜索该应用，也没有开启使用网络授权的开关。
+
+其实只需要在“使用无线局域网与蜂窝移动的应用”里面修改任意一个应用的使用网络设置，再打开连不上网的应用，就会出现网络授权弹窗。这是一个系统bug，希望后续的iOS10.x.x系统会修复。
 
 
