@@ -44,3 +44,9 @@ app打包完成之后，通过Application Loader交付应用程序，在iTunes C
 
 ![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161010-6.png?raw=true)
 
+## 图片简介
+
+为了让测试的同事方便操作，用qq截图胡乱画了一个操作流程，这样看起来比较直观。以后有时间画一个漂亮的。
+
+![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161013-1.png?raw=true)
+
