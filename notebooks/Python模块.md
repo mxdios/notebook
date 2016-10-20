@@ -209,7 +209,32 @@ PNG (1920, 2172) RGBA
 
 其他常用的第三方库还有MySQL的驱动：`mysql-connector-python`，用于科学计算的NumPy库：`numpy`，用于生成文本的模板工具`Jinja2`，等等。
 
+## 模块搜索路径
 
+在加载模块时，Python会在指定路径下找.py文件，找不到就报错。
+
+```Python
+>>> import mymod
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+ImportError: No module named 'mymod'
+>>> 
+```
+
+显示搜索路径，搜索路径存放在`sys.path`。
+
+```Python
+>>> import sys
+>>> sys.path
+['', '/Library/Frameworks/Python.framework/Versions/3.5/lib/python35.zip', '/Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5', '/Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/plat-darwin', '/Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/lib-dynload', '/Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/site-packages']
+```
+
+添加搜索路径，可以直接在运行时修改`sys.path`，运行关闭后失效
+
+```Python
+>>> import sys
+>>> sys.path.append('/Users/inspiry/desktop/work/PythonCode/PythonTest/hello')
+```
 
 
 
