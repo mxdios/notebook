@@ -338,4 +338,26 @@ Developer中的AppID对应项目中的Bundle id，是一个app的唯一标识，
 
 客服告诉我最佳的解决办法是迁移应用。将原账号的应用迁移到新账号上，应用所用到的Bundle id也会随之迁移过去。但是我把iTunes Connect里的应用删除了，那就没办法迁移了。摆在我面前的有两条路，第一：重新用旧账号打包提交审核通过，迁移应用到新账号，第二：改Bundle id。苹果客服人员对我如是说，客服诚不欺我啊！
 
+# NSUserDefaults存储数组或字典报错
+
+用NSUserDefaults存储数组或字典的时候报错，程序崩溃了，报错内容如下：
+
+> Terminating app due to uncaught exception 'NSInvalidArgumentException', reason: 'Attempt to insert non-property list object {xxxxxxxxxx} for key defaultsKey'
+
+是因为要存的数组或字典对象里存在类似`"name" = "<null>"`这样的字段，这样的字段不能被解析，所以会报错。
+
+解决办法是将`"name" = "<null>"`换成`"name" = ""`，这种替换最好是服务端来做，如果服务端没做的话，移动端处理也可以，处理方式如下：
+
+```Objectivt-C
+NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:oldDict];
+for (NSString *keyStr in dict.allKeys) {
+   if ([[dict objectForKey:keyStr] isEqual:[NSNull null]]) {
+       [dict setObject:@"" forKey:keyStr];
+   } else {
+       [dict setObject:[dict objectForKey:keyStr] forKey:keyStr];
+   }
+}
+NSLog("newDict = %@", dict);
+```
+
 
