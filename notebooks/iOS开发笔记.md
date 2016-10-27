@@ -4,17 +4,17 @@
 
 ## 目录
 
-[微信的openid](https://github.com/mxdios/notebook/blob/master/notebooks/iOS%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0.md#%E5%BE%AE%E4%BF%A1%E7%9A%84openid)
-[Cell进入编辑状态，内容覆盖编辑按钮](https://github.com/mxdios/notebook/blob/master/notebooks/iOS%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0.md#cell%E8%BF%9B%E5%85%A5%E7%BC%96%E8%BE%91%E7%8A%B6%E6%80%81%E5%86%85%E5%AE%B9%E8%A6%86%E7%9B%96%E7%BC%96%E8%BE%91%E6%8C%89%E9%92%AE)
-[View中部分内嵌UIWebView](https://github.com/mxdios/notebook/blob/master/notebooks/iOS%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0.md#view%E4%B8%AD%E9%83%A8%E5%88%86%E5%86%85%E5%B5%8Cuiwebview)
-[设置UITextField的placeholder字体的颜色和字号](https://github.com/mxdios/notebook/blob/master/notebooks/iOS%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0.md#%E8%AE%BE%E7%BD%AEuitextfield%E7%9A%84placeholder%E5%AD%97%E4%BD%93%E7%9A%84%E9%A2%9C%E8%89%B2%E5%92%8C%E5%AD%97%E5%8F%B7)
-[按钮的拖动效果和点击事件并存](https://github.com/mxdios/notebook/blob/master/notebooks/iOS%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0.md#%E6%8C%89%E9%92%AE%E7%9A%84%E6%8B%96%E5%8A%A8%E6%95%88%E6%9E%9C%E5%92%8C%E7%82%B9%E5%87%BB%E4%BA%8B%E4%BB%B6%E5%B9%B6%E5%AD%98)
-[UITableViewCell左滑编辑字体颜色设置](https://github.com/mxdios/notebook/blob/master/notebooks/iOS%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0.md#uitableviewcell%E5%B7%A6%E6%BB%91%E7%BC%96%E8%BE%91%E5%AD%97%E4%BD%93%E9%A2%9C%E8%89%B2%E8%AE%BE%E7%BD%AE)
-[用Application Loader交付应用程序时，一直正在通过AppStore进行鉴定](https://github.com/mxdios/notebook/blob/master/notebooks/iOS%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0.md#%E7%94%A8application-loader%E4%BA%A4%E4%BB%98%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%97%B6%E4%B8%80%E7%9B%B4%E6%AD%A3%E5%9C%A8%E9%80%9A%E8%BF%87appstore%E8%BF%9B%E8%A1%8C%E9%89%B4%E5%AE%9A)
-[pdf的展示](https://github.com/mxdios/notebook/blob/master/notebooks/iOS%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0.md#pdf%E7%9A%84%E5%B1%95%E7%A4%BA)
-[处理git库不允许上传大于100m的文件](https://github.com/mxdios/notebook/blob/master/notebooks/iOS%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0.md#%E5%A4%84%E7%90%86git%E5%BA%93%E4%B8%8D%E5%85%81%E8%AE%B8%E4%B8%8A%E4%BC%A0%E5%A4%A7%E4%BA%8E100m%E7%9A%84%E6%96%87%E4%BB%B6)
-[删除苹果开发者平台Developer里的App ID](https://github.com/mxdios/notebook/blob/master/notebooks/iOS%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0.md#%E5%88%A0%E9%99%A4%E8%8B%B9%E6%9E%9C%E5%BC%80%E5%8F%91%E8%80%85%E5%B9%B3%E5%8F%B0developer%E9%87%8C%E7%9A%84app-id)
-[NSUserDefaults存储数组或字典报错](https://github.com/mxdios/notebook/blob/master/notebooks/iOS%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0.md#nsuserdefaults%E5%AD%98%E5%82%A8%E6%95%B0%E7%BB%84%E6%88%96%E5%AD%97%E5%85%B8%E6%8A%A5%E9%94%99)
+[微信的openid](https://github.com/mxdios/notebook/blob/master/notebooks/iOS%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0.md#%E5%BE%AE%E4%BF%A1%E7%9A%84openid)  
+[Cell进入编辑状态，内容覆盖编辑按钮](https://github.com/mxdios/notebook/blob/master/notebooks/iOS%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0.md#cell%E8%BF%9B%E5%85%A5%E7%BC%96%E8%BE%91%E7%8A%B6%E6%80%81%E5%86%85%E5%AE%B9%E8%A6%86%E7%9B%96%E7%BC%96%E8%BE%91%E6%8C%89%E9%92%AE)  
+[View中部分内嵌UIWebView](https://github.com/mxdios/notebook/blob/master/notebooks/iOS%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0.md#view%E4%B8%AD%E9%83%A8%E5%88%86%E5%86%85%E5%B5%8Cuiwebview)  
+[设置UITextField的placeholder字体的颜色和字号](https://github.com/mxdios/notebook/blob/master/notebooks/iOS%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0.md#%E8%AE%BE%E7%BD%AEuitextfield%E7%9A%84placeholder%E5%AD%97%E4%BD%93%E7%9A%84%E9%A2%9C%E8%89%B2%E5%92%8C%E5%AD%97%E5%8F%B7)  
+[按钮的拖动效果和点击事件并存](https://github.com/mxdios/notebook/blob/master/notebooks/iOS%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0.md#%E6%8C%89%E9%92%AE%E7%9A%84%E6%8B%96%E5%8A%A8%E6%95%88%E6%9E%9C%E5%92%8C%E7%82%B9%E5%87%BB%E4%BA%8B%E4%BB%B6%E5%B9%B6%E5%AD%98)  
+[UITableViewCell左滑编辑字体颜色设置](https://github.com/mxdios/notebook/blob/master/notebooks/iOS%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0.md#uitableviewcell%E5%B7%A6%E6%BB%91%E7%BC%96%E8%BE%91%E5%AD%97%E4%BD%93%E9%A2%9C%E8%89%B2%E8%AE%BE%E7%BD%AE)  
+[用Application Loader交付应用程序时，一直正在通过AppStore进行鉴定](https://github.com/mxdios/notebook/blob/master/notebooks/iOS%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0.md#%E7%94%A8application-loader%E4%BA%A4%E4%BB%98%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%97%B6%E4%B8%80%E7%9B%B4%E6%AD%A3%E5%9C%A8%E9%80%9A%E8%BF%87appstore%E8%BF%9B%E8%A1%8C%E9%89%B4%E5%AE%9A)  
+[pdf的展示](https://github.com/mxdios/notebook/blob/master/notebooks/iOS%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0.md#pdf%E7%9A%84%E5%B1%95%E7%A4%BA)  
+[处理git库不允许上传大于100m的文件](https://github.com/mxdios/notebook/blob/master/notebooks/iOS%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0.md#%E5%A4%84%E7%90%86git%E5%BA%93%E4%B8%8D%E5%85%81%E8%AE%B8%E4%B8%8A%E4%BC%A0%E5%A4%A7%E4%BA%8E100m%E7%9A%84%E6%96%87%E4%BB%B6)  
+[删除苹果开发者平台Developer里的App ID](https://github.com/mxdios/notebook/blob/master/notebooks/iOS%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0.md#%E5%88%A0%E9%99%A4%E8%8B%B9%E6%9E%9C%E5%BC%80%E5%8F%91%E8%80%85%E5%B9%B3%E5%8F%B0developer%E9%87%8C%E7%9A%84app-id)  
+[NSUserDefaults存储数组或字典报错](https://github.com/mxdios/notebook/blob/master/notebooks/iOS%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0.md#nsuserdefaults%E5%AD%98%E5%82%A8%E6%95%B0%E7%BB%84%E6%88%96%E5%AD%97%E5%85%B8%E6%8A%A5%E9%94%99)  
 
 
 # 微信的openid
