@@ -56,6 +56,10 @@
 
 [微信内置H5项目](https://github.com/mxdios/notebook/blob/master/notebooks/%E5%BE%AE%E4%BF%A1%E5%86%85%E7%BD%AEH5%E9%A1%B9%E7%9B%AE.md)
 
+## JavaScript
+
+[JavaScript基础](https://github.com/mxdios/notebook/blob/master/notebooks/JavaScript%E5%9F%BA%E7%A1%80.md)
+
 ## 其他
 
 [gitlab使用](https://github.com/mxdios/notebook/blob/master/notebooks/gitlab%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4.md)
