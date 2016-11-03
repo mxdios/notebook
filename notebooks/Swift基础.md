@@ -5,13 +5,17 @@
 在swift1.0时，输出换行为println("hello world")，这个函数不用了，改为print也可换行这是一个完整的程序，这便是程序的入口，不需要main函数，oc是有main函数作为程序的入口的
 ## 注释，分号
 swift的多行注释可以嵌套使用
-swift不需要使用分号，一行中写多个语句需要用分号分割## 变量声明let声明常量，var声明变量常量：编译时不需要获取，只能赋值一次，可多次使用，值不可改变。变量：变量可多次赋值，改变值，但不可改变类型swift是类型安全语言 支持类型推导，不需要指定类型```Swiftlet a = 20  //这里a自动推断为整数Int类型```
+swift不需要使用分号，一行中写多个语句需要用分号分割## 变量声明let声明常量，var声明变量常量：编译时不需要获取，只能赋值一次，可多次使用，值不可改变。变量：变量可多次赋值，改变值，但不可改变类型swift是类型安全语言 支持类型推导，不需要指定类型```Swiftlet a = 20  //这里a自动推断为整数Int类型
+let pi = 3.14159 //pi会被推断为Double类型```
+推断浮点类型时，swift会推断为`Double`而不是`Float`
 也可指定类型```Swiftlet a:Int = 200 //指定a的类型为Int 赋值其他类型则会报错let a:Character = "1"  //Character指定类型只能包含一个字符```
+
+
 ## 数据类型### 整数
-不带小数位的数字，包括有符号位（Int 正数负数0），无符号位（UInt 正数0） swift提供了8 16 32 64位数字形式，用min max获取某个类型的最大最小值```Swiftvar d = Int64.minvar e = Int64.max```
+不带小数位的数字，包括有符号位（Int 正数负数0），无符号位（UInt 正数0） swift提供了8 16 32 64位数字形式，用`min` `max`获取某个类型的最大最小值```Swiftvar d = Int64.minvar e = Int64.max```
 Int类型 根据机器选择位数 32位机器=Int32  64位机器=Int64## 浮点型两种浮点型 Double 64位    Float 32位### 类型别名 typealias ```Swifttypealias f = UInt16var ee:f = 12```
 ### Bool```Swiftlet a = 1let b = truelet c = falseif a == 1 || b {	}
-```swift中布尔型只有两个取值true和false，不再是oc中那样非零即真。上面代码中a为Int类型，bc是Bool类型，单独a不能做if条件，if a {} 这种写法是错的。b和c是Bool型可以作为判断条件。### 元组
+```swift中布尔型只有两个取值`true`和`false`，不再是oc中那样非零即真。上面代码中`a`为`Int`类型，`b``c`是`Bool`类型，单独`a`不能做`if`条件，`if a {}` 这种写法是错的。`b`和`c`是`Bool`型可以作为判断条件。### 元组
 元组，oc中没有的一个新的数据类型，与数组和字典都类似，或者说是数组和字典的融合体。元组很任意：长度任意，元素类型任意。
 
 ```Swiftlet y = (9, "你好", true)```
@@ -19,14 +23,51 @@
 如果嫌脚标不够直观，可以给元组里每个元素命名```Swiftlet(num, name, age) = y //依次给元组y里的元素命名let(num, _, age) = y  //如果不想访问第1个元素，则用_代替print(num) //打印元素便可直接写元素名```
 元组还有另一种初始化形式，这个看起来像字典，每个元素初始化的时候便给它一个名字```Swiftlet z = (name:"jack", age:22, isGood:true)print(z.name) //打印的时候，名字便可代替脚标```
 元组的可变与不可变```Swiftlet manInfo = (name:"jack", age:22, isGood:true)var womanInfo = (name:"lili", age:20, isGood:true)manInfo.name = "make" //let不可变   报错，不可修改womanInfo.name = "mimi" //var可变  可以修改womanInfo.age = "20" //这里注意：不论元组可变不可变，都不能修改元组内元素的数据类型```
-## 类型转换### int->string```Swiftlet a = 10let b:String = String(a)  或者 let b:String = “\(a)”```
+## 类型转换
+
+### 浮点类型与整型转换
+
+```Swift
+let a = 10
+let b = 3.94
+print(a + b) //会报错，不可相加
+print(Double(a) + b) //整型转为浮点型：结果是13.94
+print(a + Int(b))  //将浮点型转为整型：结果是13
+```
+因为`a`是`Int`类型，`b`是`Double`类型，类型不同不能相加。浮点型转整型，浮点型会被截断，不会四舍五入，`3.94`会转为`3`，`-2.99`会转为`-2`
+
+但是`let c = 3 + 3.1415`，这种是可以相加的，因为数字本身并没有类型，只有在求值的时候才会推断出类型，这里`c`的类型是`Double`。
+### int->string```Swiftlet a = 10let b:String = String(a)  或者 let b:String = “\(a)”```
 第二种也是拼接字符串常用的方法 print(“abcd\(a)”)### string->int```Swiftlet a = “10”let b = Int(a)```
 swift1.0时的写法： let b = a.toInt()这样写 b的类型不确定，如果a能转换成Int类型，那么b就是Int类型, 如果a = “10a” 这样就无法转换成Int的 （在oc中a=@”10a” 可以 a.integerValue 转换出10的值），转换=nil
 将b指定类型 let b:Int = Int(a)  这样写会报错，因为a不能保证是否能转换成Int类型两种办法解决这个报错	
 ```Swiftlet b:Int = Int(a)!  保证a肯定能转换出Int类型，如果a转不出来就报错了let b:Int? = Int(a)  不保证a是否能转换出Int类型，就是b可空，可以赋值nil```
-**swift是类型安全型语言**### 可空类型```Swiftvar aa = "aaa"aa = nil //这样是会报错的，aa是String类型，不能为nil```
+**swift是类型安全型语言**### 可空类型可空类型也叫可选类型，处理值可能缺失的情况，分为`有值为x`或者`没有值````Swiftvar aa = "aaa"aa = nil //这样是会报错的，aa是String类型，不能为nil
+
+var bb:Int? = 4 //bb包含一个可选的Int值4
+bb = nil //这样不会报错，现在不包含值```
 若想可以赋值nil```Swift	
-var aa:String? = nil```
+var aa:String? = nil
+var bb:String?  //不赋值的时候，会自动设置为nil```
+
+`nil`: swift中的nil和oc中的nil不同，oc中的nil是指向不存在对象的指针，而swift中的nil是一个确定的值，用来表示缺失，任何类型的可选状态都可以设置为nil。
+
+### 强制解析
+
+```Swift	
+var aa:Int?
+aa = 4
+print(aa!)
+```
+用`!`表示强制解析，表示我知道这个可选值`aa`有值，请方向使用。要注意使用强制解析的时候必须确定可选类型真的有值，不然的话会报错。
+
+比如如果没有`aa = 4`，程序会报错:
+
+```
+fatal error: unexpectedly found nil while unwrapping an Optional value
+```
+
+如果不使用强制解析，直接打印`print(aa)`，会打印出`Optional(4)`的结果，因为这是个可选类型。
 ## 断言```Swiftlet a = 10assert(a > 5, "aaaa")```
 条件判定true 程序继续执行，判定false程序被中断，控制台输出断言信息断言是一个开发特性，只在debug编译时有效，且运行时不被编译，不会消耗运行时性能。代码发布不需要刻意删除断言在对应 target 的 Build Settings 中，我们在 Swift Compiler - Custom Flags 中的 Other Swift Flags 中添加 -assert-config Debug 来强制启用断言，或者 -assert-config Release 来强制禁用断言。## 数组
 swift的数组可存放多种类型的元素，oc的NSArray只能存放对象类型```Swiftvar array = ["a", "b", 1]  ```
@@ -69,4 +110,5 @@ let a = mak(10, cont:temp)```
 调用	
 ```Swift
 geta(1,2,3,2,5)```
-## 继承一个类可以继承另一个类的方法，属性，继承类叫做子类，被继承的类叫做超类或父类。没有多继承，只有单继承```Swiftclass man {    var name:String?    var age:Int?    func make() {        print("你好")    }}class women: man {    var height:Float?    override func make() {        print("哈哈哈")    }}```
+## 继承一个类可以继承另一个类的方法，属性，继承类叫做子类，被继承的类叫做超类或父类。没有多继承，只有单继承```Swiftclass man {    var name:String?    var age:Int?    func make() {        print("你好")    }}class women: man {    var height:Float?    override func make() {        print("哈哈哈")    }}```
+
