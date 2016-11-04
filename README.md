@@ -28,6 +28,8 @@
 
 [SQLite数据库的几种操作方式](https://github.com/mxdios/XDSQLiteOperate)
 
+[Charles安装与使用](https://github.com/mxdios/notebook/blob/master/notebooks/Charles%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8.md)
+
 ## Python
 
 原文出处[廖雪峰的官方网站Python教程](http://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000)，本文只是我的学习记录，感谢廖老师提供优秀的Python学习资料。
