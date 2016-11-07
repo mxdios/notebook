@@ -72,3 +72,5 @@
 
 [关于微信小程序](https://github.com/mxdios/notebook/blob/master/notebooks/%E5%85%B3%E4%BA%8E%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F.md)
 
+[那些年用过的Mac](https://github.com/mxdios/notebook/blob/master/notebooks/%E9%82%A3%E4%BA%9B%E5%B9%B4%E7%94%A8%E8%BF%87%E7%9A%84Mac.md)
+
