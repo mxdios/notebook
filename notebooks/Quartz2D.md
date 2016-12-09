@@ -49,9 +49,33 @@ Quartz通过修改图形状态来修改绘制结果，图形状态直接决定�
 
 在iOS中要想用Quartz 2D在屏幕上绘图，需要自定义一个UIView，在UIView的`- (void)drawRect:(CGRect)rect`方法中实现绘图操作，这个方法会在UIView显示在屏幕上和需要被刷新的时候调用。创建上下文的方法如下：
 
-```OC
+```Objective-C
 - (void)drawRect:(CGRect)rect {
     CGContextRef context = UIGraphicsGetCurrentContext();
 }
 ```
+
+在上下文中绘制图形：
+
+```Objective-C
+- (void)drawRect:(CGRect)rect {
+    //获取图形上下文
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    //设置红色透明度0.5的填充色
+    CGContextSetRGBFillColor(context, 1, 0, 0, 0.5);
+    //填充一个矩形frame为(10, 20, 100, 40)
+    CGContextFillRect(context, CGRectMake(10, 20, 100, 40));
+    //设置蓝色透明度0.5的填充色
+    CGContextSetRGBFillColor(context, 0, 0, 1, 0.5);
+    //填充一个矩形frame为(10, 20, 40,  100)
+    CGContextFillRect(context, CGRectMake(10, 20, 40, 100));
+}
+```
+
+![显示结果](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161209-0.png?raw=true)
+
+注意：设置填充色和填充矩形的方法顺序不能颠倒，不然填充色填充不到想填充的矩形中。得不到填充色填充的会是黑色。
+
+
+
 
