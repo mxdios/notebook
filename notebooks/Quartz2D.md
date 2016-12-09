@@ -43,9 +43,7 @@ Quartz 2D API属于Code Graphics框架，所以Quartz 2D的数据类型是以CG�
 
 Quartz通过修改图形状态来修改绘制结果，图形状态直接决定了图形的最终渲染结果。图形状态包含用于绘制程序的参数，绘制参数改变了，图形自然就变了。比如修改了填充色值，图形颜色就变了。
 
-## 图形上下文Graphics Context的创建应用
-
-### iOS中使用Graphics Context绘制图形
+## iOS中使用Graphics Context绘制图形
 
 在iOS中要想用Quartz 2D在屏幕上绘图，需要自定义一个UIView，在UIView的`- (void)drawRect:(CGRect)rect`方法中实现绘图操作，这个方法会在UIView显示在屏幕上和需要被刷新的时候调用。创建上下文的方法如下：
 
@@ -75,6 +73,53 @@ Quartz通过修改图形状态来修改绘制结果，图形状态直接决定�
 ![显示结果](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161209-0.png?raw=true)
 
 注意：设置填充色和填充矩形的方法顺序不能颠倒，不然填充色填充不到想填充的矩形中。得不到填充色填充的会是黑色。
+
+## 路径
+
+路径可以构建出多种图形，可以是点、直线、弧线、不规则线、规则或不规则形状，可以对闭合路径进行填充行程面。使用路径绘制出想要的图形，有两步：创建路径和绘制路径。创建出点、线等路径，使用函数`CGContextDrawPath`绘制路径。
+
+### 点
+
+点是依靠x、y值固定的位置，可作为路径的起始点位置。比如要画一个线段，必须要有一个起点和一个终点，两点确定一条线段。使用函数`CGContextMoveToPoint`来确定起始点，传入图形上下文和x,y坐标点。
+
+```Objective-C
+//确定一个坐标为(10,10)的点
+CGContextMoveToPoint(context, 10, 10);
+```
+
+### 直线
+
+有起始点，再指定一个终点位置就能确定一条直线了，使用函数`CGContextAddLineToPoint`来指定终点位置。
+
+```Objective-C
+- (void)drawRect:(CGRect)rect {
+	  //获取图形上下文
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    //设置起点
+    CGContextMoveToPoint(context, 20, 20);
+    //起点延长至终点位置
+    CGContextAddLineToPoint(context, 50, 50);
+    //绘制路径
+    CGContextDrawPath(context, kCGPathStroke);    
+}
+```
+
+可以使用`CGContextAddLineToPoint`函数指定多个位置点，线段会一个接一个画下去，形成折线图形。也可以使用`CGContextAddLines`函数一次性指定多个位置点，完成折线图形，此时无需指定起始点，第一个点默认为起始点(即使用`CGContextMoveToPoint`指定起始点也无效)。
+
+```Objective-C
+//一个一个点继续加
+CGContextMoveToPoint(context, 20, 20);    
+CGContextAddLineToPoint(context, 50, 50);
+CGContextAddLineToPoint(context, 30, 80);
+
+//一次性指定多个点
+CGPoint pos[3] = {CGPointMake(80, 20), CGPointMake(20, 50), CGPointMake(100, 200)};
+CGContextAddLines(context, pos, 3);
+```
+
+由于`CGContextAddLineToPoint`函数必须得有`CGContextMoveToPoint`函数固定起始点，`CGContextAddLines`函数默认第一个点为起始点，所以`CGContextAddLines`后面可以跟着`CGContextAddLineToPoint`继续加点画线，能连成一组折线，而`CGContextMoveToPoint`+`CGContextAddLineToPoint`画线后面不能跟`CGContextAddLines`，会画成两组无关联的折线。
+
+### 圆弧
 
 
 
