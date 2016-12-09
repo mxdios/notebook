@@ -49,7 +49,7 @@ Quartz通过修改图形状态来修改绘制结果，图形状态直接决定�
 
 在iOS中要想用Quartz 2D在屏幕上绘图，需要自定义一个UIView，在UIView的`- (void)drawRect:(CGRect)rect`方法中实现绘图操作，这个方法会在UIView显示在屏幕上和需要被刷新的时候调用。创建上下文的方法如下：
 
-```
+```OC
 - (void)drawRect:(CGRect)rect {
     CGContextRef context = UIGraphicsGetCurrentContext();
 }
