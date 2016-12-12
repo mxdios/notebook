@@ -121,6 +121,31 @@ CGContextAddLines(context, pos, 3);
 
 ### 圆弧
 
+画圆弧提供了两个函数，一个是`CGContextAddArc`，依次指定`图形上下文`、`圆心坐标`、`半径`、`起始弧度`、`终止弧度`、`画线顺时针(1)或逆时针(0)`。
+
+```Objective-C
+CGContextRef context = UIGraphicsGetCurrentContext();
+CGContextAddArc(context, 100, 200, 30, 0, M_PI, 0);
+CGContextDrawPath(context, kCGPathStroke);
+```
+
+第二个函数是`CGContextAddArcToPoint`，三点+半径确定一个圆弧。`CGContextMoveToPoint`函数确定第一个点，`CGContextAddArcToPoint`添加第二个点、第三个点和还有半径。原理：以第二点为中心，分别向第一点、第三点延长两条射线，射线夹角小于180°的一侧，以指定半径画圆弧，圆弧与射线相切。
+
+```Objective-C
+CGContextRef context = UIGraphicsGetCurrentContext();
+CGContextMoveToPoint(context, 100, 100);
+CGContextAddArcToPoint(context, 100, 150, 150, 150, 50);
+CGContextDrawPath(context, kCGPathStroke);
+```
+
+### 曲线
 
 
+
+```Objective-C
+CGContextRef context = UIGraphicsGetCurrentContext();
+CGContextMoveToPoint(context, 100, 100);
+CGContextAddCurveToPoint(context, 150, 50, 200, 200, 300, 100);
+CGContextDrawPath(context, kCGPathStroke);
+```
 
