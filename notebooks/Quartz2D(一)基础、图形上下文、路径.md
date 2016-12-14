@@ -335,7 +335,7 @@ CGContextFillRect(context, CGRectMake(20, 250, 350, 50));
 
 执行结果：
 
-![裁剪路径和混合模式的执行结果](http://oalg33nuc.bkt.clouddn.com/QQ20161213-3.png)|
+![裁剪路径和混合模式的执行结果](http://oalg33nuc.bkt.clouddn.com/QQ20161213-3.png)
 
 ---
 
