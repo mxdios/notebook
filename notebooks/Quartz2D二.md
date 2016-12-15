@@ -150,4 +150,61 @@ CGContextFillRect(context, CGRectMake(100, 50, 100, 50));
 3.	kCGRenderingIntentRelativeColorimetric：相对色度渲染意图。转换所有的颜色(包括色域内的)，以补偿图形上下文的白点与输出设备白点之间的色差。kCGRenderingIntentPerceptual：感知渲染意图。通过压缩图形上下文的色域来适应输出设备的色域，并保持源颜色空间的颜色之间的相对性。感知渲染意图适用于相片及其它复杂的高细度图片。
 4.	kCGRenderingIntentSaturation：饱和度渲染意图。把颜色转换到输出设备色域内时，保持颜色的相对饱和度。结果是包含亮度、饱和度颜色的图片。饱和度意图适用于生成低细度的图片，如描述性图表。
 
+## 变换
+
+变换是使用Quartz内置的变换函数对绘图进行平移、旋转和缩放变换。
+
+## 修改CTM
+
+CTM是Current Transformation Matrix，当前变换矩阵。可以操作CTM来平移、旋转、缩放page，绘制对象在page上，自然也会变换。
+
+通过`CGContextDrawImage`函数绘制图片到page上。
+
+```Objective-C
+CGContextDrawImage(context, CGRectMake(20, 40, 100, 150), [UIImage imageNamed:@"img"].CGImage);
+```
+
+![将图片绘制到page上](http://oalg33nuc.bkt.clouddn.com/QQ20161215-4.png)
+
+可以看到，图片是上下颠倒的。是因为iOS的UIKit坐标是以左上角为原点，y轴向下，Quartz 2D的图形绘制引擎坐标是左下角为原点，y轴向上。因为坐标轴上下相反，所以图片上下颠倒。macOS的坐标布局和Quartz 2D一样，以左下角为坐标原点，y轴向上。
+
+### 平移
+
+调用函数`CGContextTranslateCTM`指定沿x轴和y轴的平移位置。沿x轴平移100，沿y轴平移50：
+
+```Objective-C
+CGContextTranslateCTM (context, 100, 50);
+```
+
+### 旋转
+
+调用函数`CGContextRotateCTM`指定旋转角度，是以坐标原点为中心，旋转指定角度。这个坐标原点是指iOS的UIKit的左上角坐标原点。注意要先进行`CGContextRotateCTM`旋转，再`CGContextDrawImage`画图。
+
+```Objective-C
+CGContextRotateCTM(context, M_PI_4);
+```
+
+![旋转前与旋转后的图片比较](http://oalg33nuc.bkt.clouddn.com/QQ20161215-5.png)
+
+函数传入的是弧度值，可以定义以下方法，传入角度值：
+
+```Objective-C
+static inline double radians (double degrees) {return degrees * M_PI/180;}
+```
+
+等价于上面的旋转函数调用：
+
+```Objective-C
+CGContextRotateCTM(context, radians(45.));
+```
+
+### 缩放
+
+调用函数`CGContextScaleCTM`实现缩放操作，也是以坐标原点为中心，x，y，w，h皆缩放为指定比例
+
+```Objective-C
+CGContextScaleCTM(context, 0.5, 0.5);
+```
+
+![缩放前后的图片比较](http://oalg33nuc.bkt.clouddn.com/QQ20161215-6.png)
 
