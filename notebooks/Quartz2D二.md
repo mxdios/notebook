@@ -168,17 +168,19 @@ CGContextDrawImage(context, CGRectMake(20, 40, 100, 150), [UIImage imageNamed:@"
 
 可以看到，图片是上下颠倒的。是因为iOS的UIKit坐标是以左上角为原点，y轴向下，Quartz 2D的图形绘制引擎坐标是左下角为原点，y轴向上。因为坐标轴上下相反，所以图片上下颠倒。macOS的坐标布局和Quartz 2D一样，以左下角为坐标原点，y轴向上。
 
+注意要先进行CTM变换操作，再`CGContextDrawImage`画图。
+
 ### 平移
 
 调用函数`CGContextTranslateCTM`指定沿x轴和y轴的平移位置。沿x轴平移100，沿y轴平移50：
 
 ```Objective-C
-CGContextTranslateCTM (context, 100, 50);
+CGContextTranslateCTM(context, 100, 50);
 ```
 
 ### 旋转
 
-调用函数`CGContextRotateCTM`指定旋转角度，是以坐标原点为中心，旋转指定角度。这个坐标原点是指iOS的UIKit的左上角坐标原点。注意要先进行`CGContextRotateCTM`旋转，再`CGContextDrawImage`画图。
+调用函数`CGContextRotateCTM`指定旋转角度，是以坐标原点为中心，旋转指定角度。这个坐标原点是指iOS的UIKit的左上角坐标原点。
 
 ```Objective-C
 CGContextRotateCTM(context, M_PI_4);
@@ -207,4 +209,56 @@ CGContextScaleCTM(context, 0.5, 0.5);
 ```
 
 ![缩放前后的图片比较](http://oalg33nuc.bkt.clouddn.com/QQ20161215-6.png)
+
+### 累计变换操作
+
+上文说道，使用`CGContextDrawImage`函数画的图片上下颠倒，可以使用累计变换操作将图片扶正。累计变换操作的执行顺序不同，会导致不同结果。
+
+```Objective-C
+CGRect imgRect = CGRectMake(100, 40, 100, 130);
+CGContextTranslateCTM(context, imgRect.size.width + imgRect.origin.x * 2, imgRect.size.height + imgRect.origin.y * 2);
+CGContextRotateCTM(context, M_PI);
+CGContextDrawImage(context, imgRect, [UIImage imageNamed:@"img"].CGImage);
+```
+
+![图片扶正结果](http://oalg33nuc.bkt.clouddn.com/QQ20161216-0.png)
+
+## 仿射变换
+
+仿射变换可以实现与CTM函数相同的变换操作，使用仿射变换函数构造矩阵，调用函数`CGContextConcatCTM`应用于CTM，达到变换效果。
+
+仿射变换函数：
+
+|函数|功能|
+|:---|:---|
+|CGAffineTransformMakeTranslation|构造平移矩阵，指定移动x,y值|
+|CGAffineTransformTranslate|在现有的变换操作基础上使用平移操作|
+|CGAffineTransformMakeRotation|构造旋转矩阵，指定旋转弧度|
+|CGAffineTransformRotate|在现有的变换操作基础上使用旋转操作|
+|CGAffineTransformMakeScale|构造缩放矩阵，指定x,y拉伸或收缩坐标|
+|CGAffineTransformScale|在现有的变换操作基础上使用旋转操作|
+
+构造变换矩阵的函数应用，执行结果和上文中图片一样，等价于上文中CTM函数变换操作：
+
+```Objective-C
+//平移
+CGAffineTransform translation = CGAffineTransformMakeTranslation(100, 50);
+CGContextConcatCTM(context, translation);
+//旋转
+CGAffineTransform rotation = CGAffineTransformMakeRotation(M_PI_4);
+CGContextConcatCTM(context, rotation);
+//缩放
+CGAffineTransform scale = CGAffineTransformMakeScale(0.5, 0.5);
+CGContextConcatCTM(context, scale);
+```
+
+在当前变换的基础上叠加变换操作，和上文中的累计变换操作等价：
+
+```Objective-C
+CGAffineTransform translate = CGAffineTransformTranslate(CGContextGetCTM(context), 100, 50);
+CGAffineTransform rotate = CGAffineTransformRotate(translate, M_PI_4);
+CGAffineTransform scale = CGAffineTransformScale(rotate, 0.5, 0.5);
+CGContextConcatCTM(context, scale);
+```
+
 
