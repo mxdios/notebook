@@ -157,6 +157,198 @@ CGContextSetFillPattern(context, pattern, color);
 
 ## 阴影
 
+阴影有三个属性：x偏移量，y偏移量，模糊度
 
+阴影通过函数`CGContextSetShadow`设置，指定图形上下文、x偏移量、y偏移量、模糊度。设置阴影后，绘制的对象都会有阴影，阴影的色值为0.3透明度的黑色，颜色RGBA值为{0, 0, 0, 0.3}。
 
+也可以是使用函数`CGContextSetShadowWithColor`设置彩色阴影。
+
+在调用`CGContextSetShadow`或`CGContextSetShadowWithColor`之前保存图形状态，可以通过恢复图形状态来关闭阴影。或者设置阴影颜色为`NULL`关闭阴影。
+
+分别设置彩色阴影和普通阴影：
+
+```Objective-C
+CGContextRef context = UIGraphicsGetCurrentContext();
+CGContextSaveGState(context);
+CGContextSetShadowWithColor(context, CGSizeMake(10, 10), 2, [UIColor redColor].CGColor);
+CGContextSetRGBFillColor (context, 0, 1, 0, 1);
+CGContextAddEllipseInRect(context, CGRectMake(40, 40, 100, 100));
+CGContextFillPath(context);
+CGContextSetShadow(context, CGSizeMake(10, 10), 2);
+CGContextFillRect(context, CGRectMake(200, 40, 100, 100));
+CGContextRestoreGState(context);
+```
+
+运行结果：
+
+![圆形的红色阴影和矩形的灰色阴影](http://oalg33nuc.bkt.clouddn.com/QQ20161220-2.png)
+
+x偏移量正值在图形右边，负值在图形左边。y偏移量和坐标有关，在iOS中，UIKit坐标系y轴和Quartz 2D坐标系y轴相反，所以如果是由UIKit创建的图形上下文则正值在图形下面，负值在图形上面。macOS的坐标系和Quartz 2D坐标系一样，所以正值在图形上面，负值在图形下面。阴影绘制不受CTM影响。
+
+## 渐变
+
+可以使用函数`CGShadingRef`和`CGGradientRef`创建渐变。渐变分为轴向渐变和径向渐变。渐变的颜色变化有很多，可以是一种颜色到另一种颜色过度，也可以是多种颜色依次过度变化，还有是一种颜色的透明度`alpha`变化，但是这种无法绘制到PDF上，无法打印。
+
+`CGShading`和`CGGradient`的区别：
+
+|CGGradient|CGShading|
+|:---|:---|
+|可以使用同一对象绘制轴向和径向梯度|需要创建单独的对象的轴向和径向梯度|
+|在绘图时设置渐变的几何体|在对象创建时间设置渐变的几何体|
+|Quartz计算梯度中每个点的颜色|需要提供一个回调函数，用来计算渐变中每个点的颜色|
+|可以定义两个以上的位置和颜色|需要设计回调，使用两个以上的位置和颜色|
+
+### CGGradient
+
+使用CGGradient创建渐变。
+
+1. 首先调用函数`CGGradientCreateWithColorComponents`创建`CGGradient`对象，参数含义分别是：颜色空间、颜色数组（采用RGBA颜色）、位置数组（0.0-1.0之间的数值，0.0为轴线起点，1.0为轴线终点。传递NULL默认0为起始位置，1为终点位置，相当于{0.0, 1.0}）、数组中元素个数。
+2. 调用`CGContextDrawLinearGradient`函数绘制轴向渐变或`CGContextDrawRadialGradient`函数绘制径向渐变，参数含义分别是：图形上下文、`CGGradient`对象、起始位置、终止位置、绘图选项。
+3. 绘制完毕后，释放颜色空间和`CGGradient`对象。
+
+绘制轴向渐变:
+
+```Objective-C
+CGContextRef context = UIGraphicsGetCurrentContext();
+CGFloat compoents[] = {1,0,1,1, 0.3,0.5,1,1.0};
+CGFloat locations[] = {0.0, 1.0};
+CGColorSpaceRef colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
+CGGradientRef gradient = CGGradientCreateWithColorComponents(colorSpace, compoents, locations, 2);
+CGContextDrawLinearGradient(context, gradient, CGPointMake(0, 0), CGPointMake(0, 100), kCGGradientDrawsBeforeStartLocation);
+CGColorSpaceRelease(colorSpace);
+CGGradientRelease(gradient);
+```
+
+![使用CGGradient绘制轴向渐变](http://oalg33nuc.bkt.clouddn.com/QQ20161221-0.png)
+
+绘制径向渐变:
+
+```Objective-C
+CGContextRef context = UIGraphicsGetCurrentContext();
+CGFloat compoents[] = {1,0,1,1, 0.3,0.5,1,1.0};
+CGFloat locations[] = {0.0, 1.0};
+CGColorSpaceRef colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
+CGGradientRef gradient = CGGradientCreateWithColorComponents(colorSpace, compoents, locations, 2);
+CGContextDrawRadialGradient(context, gradient, CGPointMake(200, 50), 20, CGPointMake(200, 400), 70, kCGGradientDrawsAfterEndLocation);
+CGColorSpaceRelease(colorSpace);
+CGGradientRelease(gradient);
+```
+
+![使用CGGradient绘制径向渐变](http://oalg33nuc.bkt.clouddn.com/QQ20161221-1.png)
+
+### CGShading
+
+绘制轴向渐变需要以下步骤：
+
+1.	设置 CGFunction 对象来计算颜色值
+2.	创建轴向渐变的 CGShading 对象
+3.	裁减上下文
+4.	使用 CGShading 对象来绘制轴向渐变
+5.	释放对象
+
+绘制轴向渐变完整代码：
+
+```Objective-C
+- (void)drawRect:(CGRect)rect {
+    [super drawRect:rect];
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
+    CGFunctionRef functionObj = getFunction(colorspace);
+    CGShadingRef shading = CGShadingCreateAxial(colorspace, CGPointMake(0, 0.5), CGPointMake(1, 0.5), functionObj, false, false);
+    CGAffineTransform myTransform = CGAffineTransformMakeScale(100, 100);
+    CGContextConcatCTM (context, myTransform);
+    CGContextSaveGState (context);
+    CGContextBeginPath(context);
+    CGContextAddArc(context,  .5, .5, .3, 0, M_PI, 0);
+    CGContextClosePath(context);
+    CGContextClip(context);
+    CGContextDrawShading(context, shading);
+    CGShadingRelease(shading);
+    CGColorSpaceRelease(colorspace);
+    CGFunctionRelease(functionObj);
+    CGContextRestoreGState (context);
+}
+
+static CGFunctionRef getFunction(CGColorSpaceRef colorspace) {
+    size_t numComponents = 1 + CGColorSpaceGetNumberOfComponents(colorspace);
+    CGFloat input_value_range[] = {0, 1};
+    CGFloat output_value_range[] = {0, 1, 0, 0, 0,0,1,1};
+    CGFunctionCallbacks callbacks = {0, &calculateShadingValues, NULL};
+    return CGFunctionCreate((void *) numComponents, 1, input_value_range, numComponents, output_value_range, &callbacks);
+}
+
+static void calculateShadingValues(void *info, const CGFloat *in, CGFloat *out) {
+    CGFloat v;
+    size_t k, compoents;
+    static const CGFloat c[] = {1,0,0.5,1};
+    compoents = (size_t)info;
+    v = *in;
+    for (k = 0; k < compoents - 1; k ++)
+        *out ++ = c[k] * v;
+    *out++ = 1;
+}
+```
+
+运行结果：
+
+![使用CGShading绘制轴向渐变](http://oalg33nuc.bkt.clouddn.com/QQ20161221-2.png)
+
+绘制径向渐变，需要以下步骤：
+
+1.	设置 CGFunction 对象来计算颜色值
+2.	创建径向渐变的 CGShading 对象
+3.	使用 CGShading 对象来绘制径向渐变
+4.	释放对象
+
+绘制径向渐变完整代码：
+
+```Objective-C
+- (void)drawRect:(CGRect)rect {
+    [super drawRect:rect];
+
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
+    CGFunctionRef functionObj = getFunction(colorspace);
+    CGShadingRef shading = CGShadingCreateRadial(colorspace, CGPointMake(0.25, 0.3), 0.1, CGPointMake(0.7, 0.7), 0.25, functionObj, false, false);
+
+    CGAffineTransform myTransform = CGAffineTransformMakeScale(100, 100);
+    CGContextConcatCTM (context, myTransform);
+    CGContextSaveGState (context);
+    
+    CGContextClipToRect (context, CGRectMake(0, 0, 1, 1));
+    CGContextSetRGBFillColor (context, 1, 1, 1, 1);
+    CGContextFillRect (context, CGRectMake(0, 0, 1, 1));
+    
+    CGContextDrawShading(context, shading);
+    
+    CGShadingRelease(shading);
+    CGColorSpaceRelease(colorspace);
+    CGFunctionRelease(functionObj);
+    CGContextRestoreGState (context);
+}
+
+static CGFunctionRef getFunction(CGColorSpaceRef colorspace) {
+    size_t numComponents = 1 + CGColorSpaceGetNumberOfComponents(colorspace);
+    
+    CGFloat input_value_range[] = {0, 1};
+    CGFloat output_value_range[] = {0, 1, 0, 0, 0,0,1,1};
+    
+    CGFunctionCallbacks callbacks = {0, &calculateShadingValues, NULL};
+    return CGFunctionCreate((void *) numComponents, 1, input_value_range, numComponents, output_value_range, &callbacks);
+
+}
+
+static void calculateShadingValues(void *info, const CGFloat *in, CGFloat *out) {
+    
+    size_t k, compoents;
+    double frequency[] = {55, 220, 110, 0};
+    compoents = (size_t)info;
+    for (k = 0; k < compoents - 1; k ++)
+        *out++ = (1 + sin(*in * frequency[k])) / 2;
+    *out++ = 1;
+}
+```
+
+![使用CGShading绘制径向渐变](http://oalg33nuc.bkt.clouddn.com/QQ20161221-3.png)
 
