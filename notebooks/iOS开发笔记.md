@@ -375,4 +375,11 @@ for (NSString *keyStr in dict.allKeys) {
 NSLog("newDict = %@", dict);
 ```
 
+# UITableViewCell刷新闪烁问题
+
+```swift
+UIView.performWithoutAnimation {
+	tableView?.reloadRows(at: [IndexPath(row: 0, section: 1)], with: .none)
+}
+```
 
