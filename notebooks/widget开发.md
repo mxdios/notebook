@@ -56,35 +56,88 @@ Update: Make sure to set the "Embedded Content Contains Swift Code" build settin
 
 博文更新中说，可以更改`Embedded Content Contains Swift Code`这个设置为yes，但是在Xcode8.2.1中，这个设置已经没有了，取而代之的是`Always Embed Swift Standard Libraries`，亲测主`targets`和widget的`targets`中修改这个设置的Bool值，都还是会崩溃。
 
-
-
-
-
-
------
-
-### widget折叠
+## widget折叠
 
 iOS10之后才有的widget折叠。
 
-```Objective-C
-#ifdef __IPHONE_10_0
-    //需要折叠
-    self.extensionContext.widgetLargestAvailableDisplayMode = NCWidgetDisplayModeExpanded;
-#endif
+```swift
+if #available(iOSApplicationExtension 10.0, *) {
+    self.extensionContext?.widgetLargestAvailableDisplayMode = .expanded
+} else {
+    // Fallback on earlier versions
+}
 ```
 
 实现下面方法。
 
-```Objective-C
-- (void)widgetActiveDisplayModeDidChange:(NCWidgetDisplayMode)activeDisplayMode withMaximumSize:(CGSize)maxSize {
-    if (activeDisplayMode == NCWidgetDisplayModeCompact) {
-        self.preferredContentSize = CGSizeMake([UIScreen mainScreen].bounds.size.width, 100);
-    } else {
-        self.preferredContentSize = CGSizeMake([UIScreen mainScreen].bounds.size.width, 400);
-    }
+```swift
+@available(iOSApplicationExtension 10.0, *)
+func widgetActiveDisplayModeDidChange(_ activeDisplayMode: NCWidgetDisplayMode, withMaximumSize maxSize: CGSize) {
+	if activeDisplayMode == .expanded {
+        self.preferredContentSize = CGSize(width: 0, height: 200)
+	} else {
+			self.preferredContentSize = maxSize
+	}
 }
 ```
+
+## 代码共享
+
+虽然widget附属于主应用，但其实是独立的。在widget中无法调用主应用中的代码，这样一来就蛋疼了。有些公共方法或者控件，在主应用中写完了，在widget却无法使用。当然把主应用中的代码拷贝一份到widget中也是可以的，这种做法太low。
+
+可以使用framework做代码共享。创建一个framework
+
+`File` -> `New` -> `Target`
+
+![创建framework](http://oalg33nuc.bkt.clouddn.com/QQ20170330-150955.png)
+
+在`framework`的`Build Phases` -> `Compile Sources`里面添加要共享的代码文件。
+
+![添加共享的代码文件](http://oalg33nuc.bkt.clouddn.com/QQ20170330-152310.png)
+
+在`TARGETS`里面，分别在主项目和widget下面的`Linked Frameworks and Libraries`里面添加新建的`framework`
+
+并在widget中用到共享代码的地方引入`framework`
+
+```swift
+import ShareToday
+```
+
+### 问题2.引入framework报错和报警告
+
+引入的时候会如下错误：
+```
+TodayViewController.swift:11:8: Module file's minimum deployment target is ios10.0 v10.0:
+```
+
+是因为framework的`Deployment Target`的版本号和widget的版本号不相符，改为一样的即可。
+
+报如下警告：
+
+```
+ld: warning: linking against a dylib which is not safe for use in application extensions: 
+```
+
+是因为application extensions限制了一些API的使用，而在新建的framework里面，可能包含了这些API，所以才会出现这个警告。
+
+解决办法：勾选framework里面的` Allow app extension API only`
+
+![注意](http://oalg33nuc.bkt.clouddn.com/QQ20170330-152418.png)
+
+### 问题3.方法调用不到
+
+加入到framework的一些方法，在引入头文件后的widget调用不到。
+
+解决办法：需要把方法设置为公用的，用`public`修饰方法，例如
+
+```swift
+public func getString(a: Int) -> String {
+	  return "\(a)"
+}
+```
+
+
+
 
 ### 点击widget开启app
 
