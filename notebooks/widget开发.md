@@ -54,7 +54,7 @@ Update: Make sure to set the "Embedded Content Contains Swift Code" build settin
 @objc (TodayViewController)
 ```
 
-博文更新中说，可以更改`Embedded Content Contains Swift Code`这个设置为yes，但是在Xcode8.2.1中，这个设置已经没有了，取而代之的是`Always Embed Swift Standard Libraries`，亲测主`targets`和widget的`targets`中修改这个设置的Bool值，都还是会崩溃。
+博文更新中说，可以更改`Embedded Content Contains Swift Code`这个设置为yes，但是在Xcode8.2.1中，这个设置已经没有了，取而代之的是`Always Embed Swift Standard Libraries`，亲测主项目的`targets`和widget的`targets`中修改这个设置的Bool值，都还是会崩溃。
 
 ## widget折叠
 
@@ -103,7 +103,7 @@ func widgetActiveDisplayModeDidChange(_ activeDisplayMode: NCWidgetDisplayMode, 
 import ShareToday
 ```
 
-### 问题2.引入framework报错和报警告
+### 问题1.引入framework报错和报警告
 
 引入的时候会如下错误：
 ```
@@ -124,9 +124,9 @@ ld: warning: linking against a dylib which is not safe for use in application ex
 
 ![注意](http://oalg33nuc.bkt.clouddn.com/QQ20170330-152418.png)
 
-### 问题3.方法调用不到
+### 问题2.方法调用不到
 
-加入到framework的一些方法，在引入头文件后的widget调用不到。
+swift中，加入到framework的一些方法，在引入头文件后的widget调用不到。
 
 解决办法：需要把方法设置为公用的，用`public`修饰方法，例如
 
@@ -136,57 +136,48 @@ public func getString(a: Int) -> String {
 }
 ```
 
+如果有共用的oc代码，需要将.m文件引入到`Compile Sources`，将.h文件拖入`Headers`的`Public`里面，然后在framework的.h头文件中`#import`共用oc代码的.h头文件
+
+![引入oc共享代码](http://oalg33nuc.bkt.clouddn.com/2017-04-02-14-17-36.png)
+
+## 数据共享
+
+### 配置证书：
+
+1. 在`Certificates, Identifiers & Profiles`里的`Identifiers`下面添加`App IDs`时，要勾选`App Groups`。
+2. 在`App Group`添加一个`App Group`，在写`Identifier`，会在前面自动添加`group.`
+3. 添加`App Group`之后，在`App IDs`点开第1步创建的id，点击edit，把`App Group`添加上，`App Group`的黄点会变成绿点。
+
+![创建的App Group](http://oalg33nuc.bkt.clouddn.com/WX20170402-113444@2x.png)
+
+![配置完成的Identifier](http://oalg33nuc.bkt.clouddn.com/WX20170402-113344@2x.png)
+
+### 添加证书
+
+在Xcode的`TARGEST`下面，主程序和widget的`Capabilities`里面，都要打开`App Groups`。下面的Steps不能有红色叹号的错误。
+
+![正确显示](http://oalg33nuc.bkt.clouddn.com/WX20170402-113739@2x.png)
+
+在证书配置正确的前提下，还出现了红色叹号的错误警告，有可能是因为主项目或者widget的`General`里面没有选择好正确的签名Team。
+
+![配置正确的签名](http://oalg33nuc.bkt.clouddn.com/WX20170402-112029@2x.png)
 
 
-
-### 点击widget开启app
-
-在app的`TARGEST`里的`info`下`URL Types`添加`URL Schemes`
-
-![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161009-1.png?raw=true)
-
-widget上显示的自定义view：`_calendarView`，给`_calendarView`添加触摸事件。
-
-```Objective-C
-UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openApp)];
-[_calendarView addGestureRecognizer:tap];
-```
-
-实现触摸事件，开启app
-
-```Objective-C
-- (void)openApp {
-    [self.extensionContext openURL:[NSURL URLWithString:@"paibanapp://"] completionHandler:^(BOOL success) {
-        NSLog(@"successs = %d", success);
-    }];
-}
-```
-
-### 数据共享
-
-创建App Groups的Identifiers。在创建证书的时候勾选App Groups，设置创建的App Groups
-
-![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161009-3.png?raw=true)
-
-在Xcode的`TARGEST` -> `Capabilities`里打开App Groups。
-
-![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161009-2.png?raw=true)
-
-#### 用NSUserDefaults共享数据，
+### 用NSUserDefaults共享数据，
 
 存储数据
 
-```Objective-C
-NSUserDefaults *shared = [[NSUserDefaults alloc] initWithSuiteName:@"group.xxxx"];//App Groups ID
-[shared setObject:[NSDictionary dictionaryWithObjectsAndKeys:dutyArray, @"dutyArrayKey", selectDayStr, @"selectDayStrKey", tags, @"selectTagArrayKey", nil] forKey:@"todayViewShared"];
-[shared synchronize];
+```swift
+let shareDefaults = UserDefaults(suiteName: "group.xxx.xxx.xx")//App Groups ID
+shareDefaults?.set(worksArray, forKey: "worksArray")
+shareDefaults?.synchronize()
 ```
 
 读取数据
 
-```Objective-C
-NSUserDefaults *shared = [[NSUserDefaults alloc] initWithSuiteName:@"group.xxxx"];//App Groups ID
-NSDictionary *dict = [NSDictionary dictionaryWithDictionary:[shared objectForKey:@"todayViewShared"]];
+```swift
+let shareDefaults = UserDefaults(suiteName: "group.xxx.xxx.xx")//App Groups ID
+let worksArray = shareDefaults?.array(forKey: "worksArray")
 ```
 
 #### 用NSFileManager共享数据
@@ -214,4 +205,28 @@ NSURL *containerURL = [[NSFileManager defaultManager] containerURLForSecurityApp
 containerURL = [containerURL URLByAppendingPathComponent:@"Library/Caches/widget"];
 NSString *value = [NSString stringWithContentsOfURL:containerURL encoding: NSUTF8StringEncoding error:&err];
 ```
+
+### 点击widget开启app
+
+在app的`TARGEST`里的`info`下`URL Types`添加`URL Schemes`
+
+![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161009-1.png?raw=true)
+
+widget上显示的自定义view：`_calendarView`，给`_calendarView`添加触摸事件。
+
+```Objective-C
+UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openApp)];
+[_calendarView addGestureRecognizer:tap];
+```
+
+实现触摸事件，开启app
+
+```Objective-C
+- (void)openApp {
+    [self.extensionContext openURL:[NSURL URLWithString:@"paibanapp://"] completionHandler:^(BOOL success) {
+        NSLog(@"successs = %d", success);
+    }];
+}
+```
+
 
