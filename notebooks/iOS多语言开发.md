@@ -121,3 +121,20 @@ if (![userd objectForKey:@"appLanguage"]) {//如果本地没有设置语言
 ```
 
 
+## 多语言开发的坑
+
+`LaunchScreen`不支持多语言开发，苹果建议不要对启动页进行多语言开发。在`LaunchScreen.strings`文件中更改不同语言环境下的字符串，并没有效果。
+
+解决办法：删除这些没用的`LaunchScreen.strings`文件
+
+每种语言添加一个`LaunchScreen.storyboard`。比如英文对应：`LaunchScreen_en.storyboard`，繁体中文对应`LaunchScreen_zhHant.storyboard`。
+
+在`InfoPlish.strings`下面对应的语言文件中，分别添加如下字段：
+
+```
+UILaunchStoryboardName = "LaunchScreen_en";//英文文件下添加的
+```
+
+其实这样做也有局限性，在首次安装启动时能选择正确的语言显示，手动更改手机语言环境，重新打开app则无法显示更改后的语言。—— 在模拟器上测试
+
+
